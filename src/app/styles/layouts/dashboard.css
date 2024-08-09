@@ -1,0 +1,10 @@
+.dashboard-nav {
+    @apply space-y-2 font-medium flex-1;
+
+    .dashboard-menu-item {
+        @apply flex items-center p-2 rounded-sm text-white hover:bg-gray-700 gap-2;
+        &.dashboard-menu-item--active {
+            @apply bg-white text-primary cursor-default;
+        }
+    }
+}
