@@ -13,11 +13,9 @@ import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { RoleEnum } from "@ncl/app/shared/enums";
-import { createUserWithEmailAndPassword } from "@ncl/app/lib/firebase/auth";
 import { ROUTES } from "@ncl/app/shared/constants/routes";
 import { getAllCompanies } from "@ncl/app/lib/firebase/firestore/company";
 import { CompanyData } from "@ncl/app/shared/models/company.data";
-import { set } from "@firebase/database";
 
 export default function UserForm() {
   const router = useRouter();
