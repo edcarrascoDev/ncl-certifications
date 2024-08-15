@@ -30,7 +30,6 @@ export const fetchRequest = async <TData>(
         result,
       };
     } else {
-      console.log(result);
       throw new Error(result.code || result);
     }
   } catch (error) {
