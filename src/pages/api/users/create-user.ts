@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { RoleEnum } from "@ncl/app/shared/enums";
 import { UserData } from "@ncl/app/shared/models";
-import { auth, firestore } from "../../../../firebase-admin";
-import { verifyTokensAndPermissions } from "@ncl/pages/utils/verify-tokens-and-permissions";
+import { verifyTokensAndPermissions } from "@ncl/lib/utils/verify-tokens-and-permissions";
+import { auth, firestore } from "@ncl/lib/firebase-admin-config";
 
 export default async function handler(
   req: NextApiRequest,
@@ -56,7 +56,6 @@ export default async function handler(
 
       res.status(201).json({ userId: userRecord.uid });
     } catch (error) {
-      console.log({ error });
       if (
         (error instanceof Error && "errorInfo" in error) ||
         (error as any).code
