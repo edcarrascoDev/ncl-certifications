@@ -1,6 +1,7 @@
-import { getApp, getApps, initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getAuth } from "@firebase/auth";
-import { getFirestore } from "@firebase/firestore";
+import { connectFirestoreEmulator, getFirestore } from "@firebase/firestore";
+import { connectFunctionsEmulator, getFunctions } from "@firebase/functions";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -16,5 +17,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const functions = getFunctions(app);
 
 export { app, auth, db };
+
+//@todo, validate to run remote and local
+if (process.env.NODE_ENV === "test") {
+  connectFunctionsEmulator(functions, "localhost", 5001);
+  connectFirestoreEmulator(db, "localhost", 8080);
+}

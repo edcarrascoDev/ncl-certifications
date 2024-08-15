@@ -13,5 +13,6 @@ export const SIDEBAR_NAV_MENU: SidebarNavMenuProps[] = [
     route: "/dashboard/alistamientos-de-vehiculos",
     icon: "today",
   },
+  { label: "Empresas", route: "/dashboard/empresas", icon: "apartment" },
   { label: "Usuarios", route: "/dashboard/usuarios", icon: "group" },
 ];

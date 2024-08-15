@@ -1,5 +1,5 @@
-import { RoleEnum } from "@ncl/app/shared/enums";
-import { StandardDocumentData } from "@ncl/app/shared/models";
+import { StandardDocumentData } from "./standard-document.data";
+import { RoleEnum } from "../enums";
 
 export interface UserData extends StandardDocumentData {
   name: string;

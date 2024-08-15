@@ -2,13 +2,12 @@ import {
   type User,
   onAuthStateChanged as _onAuthStateChanged,
   signInWithEmailAndPassword as signInWithEmailAndPasswordFirebase,
-  createUserWithEmailAndPassword as createUserWithEmailAndPasswordFirebase,
+  fetchSignInMethodsForEmail,
+  UserCredential,
 } from "firebase/auth";
-import { auth, db } from "@ncl/app/lib/firebase/firebase.config";
-import { doc, setDoc } from "@firebase/firestore";
-import { updateProfile } from "@firebase/auth";
+import { auth } from "@ncl/app/lib/firebase/firebase.config";
 import { UserData } from "@ncl/app/shared/models";
-import { StatusResponseEnum } from "@ncl/app/shared/enums";
+import { RequestResponse } from "@ncl/app/shared/types";
 
 export function onAuthStateChanged(callback: (authUser: User | null) => void) {
   return _onAuthStateChanged(auth, callback);
@@ -20,7 +19,7 @@ export async function signInWithEmailAndPassword({
 }: {
   email: string;
   password: string;
-}) {
+}): Promise<RequestResponse<UserCredential>> {
   try {
     const result = await signInWithEmailAndPasswordFirebase(
       auth,
@@ -31,51 +30,45 @@ export async function signInWithEmailAndPassword({
     if (!result || !result.user) {
       throw new Error("sign in failed");
     }
-    return { status: StatusResponseEnum.success, result: result.user.uid };
+    return { success: true, result: result };
   } catch (error: any) {
     console.error("Error signing in", { error: error.code });
-    return { error: error.code, status: StatusResponseEnum.failed };
+    return { error: error.code, success: false };
   }
 }
 
-export async function createUserWithEmailAndPassword(data: UserData) {
+export async function createUserWithEmailAndPassword(
+  data: UserData,
+): Promise<RequestResponse<UserData>> {
   try {
-    const { name, lastName, email, password } = data;
-    const userCredential = await createUserWithEmailAndPasswordFirebase(
-      auth,
-      email,
-      password,
-    );
-    const user = userCredential.user;
+    console.log(data.email);
+    const signInMethods = await fetchSignInMethodsForEmail(auth, data.email);
 
-    if (!userCredential || !userCredential.user) {
-      throw new Error("sign Up failed");
+    console.log(signInMethods);
+
+    if (signInMethods.length > 0) {
+      return {
+        success: false,
+        error: "auth/email-already-exists",
+      };
     }
-
-    if (user) {
-      const userDocRef = doc(db, "users", user.uid);
-      await setDoc(userDocRef, {
-        ...data,
-        id: user.uid,
-      });
-
-      await updateProfile(user, {
-        displayName: `${name} ${lastName}`,
-      });
-
-      return { status: StatusResponseEnum.success, result: user };
-    }
+    // return await createUser(data);
+    return {
+      success: false,
+      error: "auth/email-already-exists",
+    };
   } catch (error: any) {
     console.error("Error signing up or adding document: ", error);
-    return { error: error.code, status: StatusResponseEnum.failed };
+    return { error: error.code, success: false };
   }
 }
 
-export async function signOut() {
+export async function signOut(): Promise<RequestResponse<string>> {
   try {
     await auth.signOut();
+    return { success: true };
   } catch (error: any) {
     console.error("Error signing out", error);
-    return { error: error.code, status: StatusResponseEnum.failed };
+    return { error: error.code, success: false };
   }
 }

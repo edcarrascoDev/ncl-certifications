@@ -3,10 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3200",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "serve:dev:local": "cross-env NODE_ENV=development next dev -p 3200",
+    "serve:dev:remote": "next dev -p 3200",
+    "dev": "cross-env NODE_ENV=development next dev -p 3200",
+    "build": "cross-env NODE_ENV=production next build",
+    "start": "cross-env NODE_ENV=production next start",
+    "lint": "next lint",
+    "functions:build": "cd functions && npm run build",
+    "functions:serve": "cd functions && npm run serve",
+    "functions:deploy": "cd functions && npm run deploy"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
@@ -16,6 +21,8 @@
     "@mui/material": "^5.16.6",
     "@mui/material-nextjs": "^5.16.6",
     "firebase": "^10.12.5",
+    "firebase-admin": "^12.3.1",
+    "firebase-functions": "^5.0.1",
     "formik": "^2.4.6",
     "next": "14.2.5",
     "react": "^18",
@@ -27,6 +34,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",

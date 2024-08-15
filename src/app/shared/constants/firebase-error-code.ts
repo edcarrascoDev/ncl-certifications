@@ -128,4 +128,8 @@ export const FIREBASE_ERROR_CODE: Record<string, string> = {
     "Este navegador no es compatible o las cookies y datos de terceros pueden estar deshabilitados.",
   "auth/email-already-in-use":
     "El correo electrónico proporcionado ya esta registrado.",
+  "auth/email-already-exists":
+    "El correo electrónico proporcionado ya esta registrado.",
+  "auth/unauthorized-user":
+    "Este usuario no está autorizado para realizar esta acción.",
 };

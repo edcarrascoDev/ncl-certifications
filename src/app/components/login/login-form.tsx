@@ -7,7 +7,7 @@ import ErrorText from "@ncl/app/components/shared/error-text";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "@ncl/app/lib/firebase/auth";
 import { createSession } from "@ncl/app/actions/auth-actions";
-import { StatusResponseEnum } from "@ncl/app/shared/enums";
+import { UserCredential } from "firebase/auth";
 
 export default function LoginForm() {
   const [error, setError] = useState("");
@@ -29,8 +29,8 @@ export default function LoginForm() {
     onSubmit: async ({ email, password }) => {
       const response = await signInWithEmailAndPassword({ email, password });
 
-      if (response.status === StatusResponseEnum.success) {
-        await createSession(response.result as string);
+      if (response.success) {
+        await createSession((response.result as UserCredential).user.uid);
       } else {
         setError(response?.error);
       }
