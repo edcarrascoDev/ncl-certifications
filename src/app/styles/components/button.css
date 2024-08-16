@@ -1,5 +1,10 @@
 .cnl-button {
-    @apply inline-flex items-center gap-1 justify-center uppercase min-w-24 h-10 text-sm font-medium tracking-wide px-6 rounded-sm;
+    @apply inline-flex items-center gap-1 justify-center uppercase min-w-24 h-10 text-sm font-medium tracking-wide px-6 rounded;
+
+    &.cnl-button--small {
+        @apply text-xs min-w-0 h-8 px-3;
+    }
+
     &:disabled {
         @apply bg-gray-400 cursor-not-allowed opacity-80;
     }

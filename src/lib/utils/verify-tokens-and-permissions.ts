@@ -1,4 +1,4 @@
-import { getAuth } from "firebase-admin/auth";
+import { auth } from "firebase-admin";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export async function verifyTokensAndPermissions(
@@ -15,9 +15,9 @@ export async function verifyTokensAndPermissions(
   }
 
   try {
-    const decodedToken = await getAuth().verifyIdToken(token);
+    const decodedToken = await auth().verifyIdToken(token);
 
-    const user = await getAuth().getUser(decodedToken.uid);
+    const user = await auth().getUser(decodedToken.uid);
     if (!user.customClaims) {
       res.status(403).json({
         code: "auth/unauthorized-user",

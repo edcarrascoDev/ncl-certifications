@@ -9,11 +9,13 @@ interface ButtonProps {
   endIcon?: string;
   onClick?: () => void;
   fullwidth?: boolean;
-  color?: "primary" | "secondary" | "success" | "warning" | "light";
+  color?: "primary" | "secondary" | "success" | "error" | "light";
+  size?: "normal" | "small";
 }
 export default function Button({
   color = "primary",
   type = "button",
+  size = "normal",
   children,
   className,
   startIcon,
@@ -24,9 +26,9 @@ export default function Button({
   return (
     <button
       data-tw-classes={
-        "bg-primary bg-secondary bg-light text-primary text-white"
+        "bg-primary bg-secondary bg-light bg-error text-primary text-white"
       }
-      className={`cnl-button bg-${color} text-${color === "light" ? "primary" : "white"} ${className} ${fullwidth ? "w-full" : "w-auto"}`}
+      className={`cnl-button cnl-button--${size} bg-${color} text-${color === "light" ? "primary" : "white"} ${className} ${fullwidth ? "w-full" : "w-auto"}`}
       type={type}
       {...props}
     >

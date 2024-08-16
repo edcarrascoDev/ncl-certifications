@@ -1,4 +1,9 @@
-import { create, update, remove } from "@ncl/app/lib/firebase/firestore/utils";
+import {
+  create,
+  update,
+  remove,
+  getAll,
+} from "@ncl/app/lib/firebase/firestore/utils";
 import { RequestResponse } from "@ncl/app/shared/types";
 import { UserData } from "@ncl/app/shared/models";
 
@@ -18,4 +23,8 @@ export async function updateUser(
 
 export async function removeUser(id: string): Promise<RequestResponse<string>> {
   return await remove<string>(id, PATH);
+}
+
+export async function getAllUsers(): Promise<RequestResponse<UserData[]>> {
+  return await getAll<UserData[]>(PATH);
 }
