@@ -4,6 +4,7 @@ import {
   update,
   remove,
   getAll,
+  get,
 } from "@ncl/app/lib/firebase/firestore/utils";
 import { RequestResponse } from "@ncl/app/shared/types";
 
@@ -16,9 +17,10 @@ export async function createCompany(
 }
 
 export async function updateCompany(
+  id: string,
   data: CompanyData,
 ): Promise<RequestResponse<CompanyData>> {
-  return await update<CompanyData>(data.id, data, PATH);
+  return await update<CompanyData>(id, data, PATH);
 }
 
 export async function removeCompany(
@@ -31,4 +33,10 @@ export async function getAllCompanies(): Promise<
   RequestResponse<CompanyData[]>
 > {
   return await getAll<CompanyData[]>(PATH);
+}
+
+export async function getCompanyById(
+  id: string,
+): Promise<RequestResponse<CompanyData>> {
+  return await get<CompanyData>(PATH, id);
 }

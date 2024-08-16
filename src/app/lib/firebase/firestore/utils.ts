@@ -6,6 +6,7 @@ import {
   WithFieldValue,
   collection,
   getDocs,
+  getDoc,
 } from "@firebase/firestore";
 import { db } from "@ncl/app/lib/firebase/firebase.config";
 import { DocumentData } from "firebase/firestore";
@@ -36,7 +37,7 @@ export async function update<TData>(
 
     return { success: true, result: docRef.id };
   } catch (error) {
-    return { success: false, error: (error as Error).message };
+    return { success: false, error: (error as any).code };
   }
 }
 
@@ -48,6 +49,20 @@ export async function remove<TData>(
     const docRef = doc(db, path, id);
     await deleteDoc(docRef);
     return { success: true, result: docRef.id };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+export async function get<TData>(path: string, id: string) {
+  const docRef = doc(db, path, id);
+  try {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { success: true, result: docSnap.data() as TData };
+    } else {
+      return { success: false, error: "Document Not Found" };
+    }
   } catch (error) {
     return { success: false, error: (error as Error).message };
   }

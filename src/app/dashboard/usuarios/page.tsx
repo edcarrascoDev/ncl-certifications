@@ -1,5 +1,4 @@
 "use client";
-import TableHeadComponent from "@ncl/app/components/dashboard/table-head";
 import Button from "@ncl/app/components/shared/button";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@ncl/app/shared/constants/routes";
@@ -10,19 +9,18 @@ import { getAllUsers } from "@ncl/app/lib/firebase/firestore/user";
 import { fetchRequest, USER_ROLES } from "@ncl/app/shared";
 import { Icon } from "@mui/material";
 import ConfirmationDialog from "@ncl/app/components/shared/confirmation-dialog";
+import TableHeader from "@ncl/app/components/shared/table-header";
 
 export default function Users() {
   const router = useRouter();
   const [users, setUsers] = useState<UserData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
 
   useEffect(() => {
-    setIsLoading(true);
     const fetchUsers = async () => {
       const response = await getAllUsers();
-      setIsLoading(false);
       if (response.success) {
         setUsers(response.result as UserData[]);
       }
@@ -30,7 +28,7 @@ export default function Users() {
     fetchUsers();
   }, []);
 
-  const handlerRemove = async (value: boolean) => {
+  const handleRemove = async (value: boolean) => {
     setOpenConfirmation(false);
     if (value) {
       setIsLoading(true);
@@ -46,7 +44,7 @@ export default function Users() {
         setUsers(users.filter((item) => item.id !== selectedUser?.id));
       }
     } else {
-      setSelectedUser(null);
+      setTimeout(() => setSelectedUser(null), 500);
     }
   };
 
@@ -99,7 +97,7 @@ export default function Users() {
   ];
   return (
     <>
-      <TableHeadComponent
+      <TableHeader
         title={"Lista de usuarios"}
         actionChildren={
           <Button onClick={() => router.push(ROUTES.NEW_USER)}>
@@ -111,8 +109,8 @@ export default function Users() {
       <ConfirmationDialog
         open={openConfirmation}
         title={`¿Está seguro de eliminar a ${selectedUser?.name} ${selectedUser?.lastName}?`}
-        message={"Una vez realizada esta acción no podrá revertir la acción"}
-        handleClose={(value) => handlerRemove(value)}
+        message={"Una vez realizada esta acción no podrá revertirla"}
+        handleClose={(value) => handleRemove(value)}
       />
     </>
   );

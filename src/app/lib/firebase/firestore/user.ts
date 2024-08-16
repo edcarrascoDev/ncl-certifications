@@ -1,4 +1,5 @@
 import {
+  get,
   create,
   update,
   remove,
@@ -27,4 +28,10 @@ export async function removeUser(id: string): Promise<RequestResponse<string>> {
 
 export async function getAllUsers(): Promise<RequestResponse<UserData[]>> {
   return await getAll<UserData[]>(PATH);
+}
+
+export async function getUserById(
+  id: string,
+): Promise<RequestResponse<UserData>> {
+  return await get<UserData>(PATH, id);
 }

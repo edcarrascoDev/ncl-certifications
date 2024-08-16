@@ -20,6 +20,7 @@ type SelectFieldProps<TData> = SelectProps & {
   options: OptionType[];
   formik?: FormikHookResponse<TData>;
   name: keyof TData;
+  groupClassname?: string;
 };
 
 export default function SelectField<TData>({
@@ -30,6 +31,7 @@ export default function SelectField<TData>({
   options,
   formik,
   name,
+  groupClassname,
   ...props
 }: SelectFieldProps<TData>) {
   const error =
@@ -39,8 +41,10 @@ export default function SelectField<TData>({
     (formik?.touched[name] && (formik?.errors[name] as string)) ||
     props.helperText;
   return (
-    <FormControl fullWidth={fullWidth}>
-      <label id={`${id}_label`}>{label}</label>
+    <FormControl className={groupClassname} fullWidth={fullWidth}>
+      <label className={"block mb-1 text-sm font-medium"} id={`${id}_label`}>
+        {label}
+      </label>
       <Select
         labelId={`${id}_label`}
         id={id}

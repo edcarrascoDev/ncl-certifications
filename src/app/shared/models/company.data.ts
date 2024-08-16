@@ -6,6 +6,7 @@ export interface CompanyData extends StandardDocumentData {
   phone: string;
   address: string;
   address2?: string;
-  nit: string;
+  documentIdType: "NIT" | "RUT";
+  documentId: number | null;
   logo?: any;
 }

@@ -5,6 +5,7 @@ export interface TableColumn<TData> {
   headerName: string;
   width?: number;
   valueGetter?: (value: TData) => string | React.ReactNode;
+  textNoWrap?: boolean;
 }
 interface TableProps<TData> {
   columns: TableColumn<TData>[];
@@ -33,7 +34,7 @@ export default function Table<TData>({ columns, rows }: TableProps<TData>) {
                   {columns.map((column) => (
                     <td
                       key={`${rowIndex}_${column.field}`}
-                      className="px-6 py-4"
+                      className={`px-6 py-4 ${column.textNoWrap && "text-nowrap"}`}
                     >
                       {column.valueGetter
                         ? column.valueGetter(row)

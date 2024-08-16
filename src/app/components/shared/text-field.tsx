@@ -12,6 +12,7 @@ type TextField<TData> = TextFieldProps & {
   labelName: string;
   formik?: FormikHookResponse<TData>;
   name: keyof TData;
+  groupClassname?: string;
 };
 
 export default function TextField<TData>({
@@ -23,11 +24,13 @@ export default function TextField<TData>({
   formik,
   name,
   type,
+  helperText,
+  groupClassname,
   ...props
 }: TextField<TData>) {
   const [showPassword, setShowPassword] = useState<boolean>();
   return (
-    <div className="mb-4">
+    <div className={`${groupClassname} mb-4`}>
       {labelName && (
         <label className="block mb-1 text-sm font-medium" htmlFor={id}>
           {labelName}
@@ -44,7 +47,8 @@ export default function TextField<TData>({
         onBlur={formik?.handleBlur}
         error={name && formik?.touched[name] && Boolean(formik?.errors[name])}
         helperText={
-          name && formik?.touched[name] && (formik?.errors[name] as string)
+          (name && formik?.touched[name] && (formik?.errors[name] as string)) ||
+          helperText
         }
         type={type !== "password" ? type : showPassword ? "text" : "password"}
         InputProps={{
