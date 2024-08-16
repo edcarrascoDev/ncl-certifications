@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { RoleEnum } from "@ncl/app/shared/enums";
-import { UserData } from "@ncl/app/shared/models";
 import { verifyTokensAndPermissions } from "@ncl/lib/utils/verify-tokens-and-permissions";
 import { auth, firestore } from "@ncl/lib/firebase-admin-config";
 

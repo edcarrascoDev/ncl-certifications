@@ -1,5 +1,4 @@
 import { Skeleton } from "@mui/material";
-import { ReactNode } from "react";
 
 export interface TableColumn<TData> {
   field: string;
