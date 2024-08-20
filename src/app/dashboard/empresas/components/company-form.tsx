@@ -3,10 +3,11 @@ import { CompanyData } from "@ncl/app/shared/models/company.data";
 import TextField from "@ncl/app/components/shared/text-field";
 import Button from "@ncl/app/components/shared/button";
 import ErrorText from "@ncl/app/components/shared/error-text";
-import { FORM_ERROR_MESSAGE, getFirebaseCodeMessage } from "@ncl/app/shared";
-import * as Yup from "yup";
+import { getFirebaseCodeMessage } from "@ncl/app/shared";
 import SelectField from "@ncl/app/components/shared/select-field";
 import { useEffect, useState } from "react";
+import { DepartmentsData } from "@ncl/app/shared/types";
+import { companyFormValidator } from "@ncl/app/shared/validators";
 
 interface CompaniesFormProps {
   companyData?: CompanyData;
@@ -24,36 +25,62 @@ export default function CompanyForm({
   error,
 }: CompaniesFormProps) {
   const [isFormDirty, setIsFormDirty] = useState(false);
+  const [externalError, setExternalError] = useState<string | null>(null);
+  const [departments, setDepartments] = useState<DepartmentsData[]>([]);
+  const [cities, setCities] = useState<string[]>([]);
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-    documentIdType: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-    documentId: Yup.number()
-      .typeError(FORM_ERROR_MESSAGE.NUMBER_INVALID)
-      .required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-    phone: Yup.string()
-      .matches(/^\d{10}$/, FORM_ERROR_MESSAGE.PHONE_INVALID)
-      .required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-    email: Yup.string()
-      .email(FORM_ERROR_MESSAGE.EMAIL_INVALID)
-      .required(FORM_ERROR_MESSAGE.EMAIL_REQUIRED),
-    address: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-  });
+  useEffect(() => {
+    fetch(
+      "https://raw.githubusercontent.com/marcovega/colombia-json/master/colombia.min.json",
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          setExternalError(
+            "Ha ocurrido un error en una petición externa, por favor intenta más tarde",
+          );
+        }
+      })
+      .then((response: DepartmentsData[]) => {
+        if (response.length > 0) {
+          setDepartments(response);
+          setCities(
+            response.reduce((prev, curr) => [...prev, ...curr.ciudades], [""]),
+          );
+        } else {
+          setExternalError(
+            "Ha ocurrido un error en una petición externa, por favor intenta más tarde",
+          );
+        }
+      })
+      .catch((e) => {
+        setExternalError(e);
+      });
+  }, []);
+
+  const setCityFromDepartment = (value: string) => {
+    setCities(
+      departments.find((item) => item.departamento === value)?.ciudades || [],
+    );
+  };
 
   const formik = useFormik<CompanyData>({
     initialValues: {
       name: companyData?.name || "",
-      documentId: companyData?.documentId || null,
+      documentId: companyData?.documentId || "",
       documentIdType: companyData?.documentIdType || "NIT",
       email: companyData?.email || "",
       phone: companyData?.phone || "",
       address: companyData?.address || "",
+      city: companyData?.city || "",
+      department: companyData?.department || "",
       address2: companyData?.address2 || "",
       id: companyData?.id || "",
     },
     enableReinitialize: true,
     validateOnChange: true,
-    validationSchema: validationSchema,
+    validationSchema: companyFormValidator,
     onSubmit: handleSubmit,
   });
 
@@ -110,6 +137,32 @@ export default function CompanyForm({
             type={"email"}
             formik={formik}
           />
+          <SelectField
+            groupClassname={"md:col-span-6"}
+            label={"Departamento"}
+            options={departments.map((item) => ({
+              children: item.departamento,
+              value: item.departamento,
+            }))}
+            disabled={dataLoading}
+            id={"department"}
+            name={"department"}
+            formik={formik}
+            onChange={(event) => {
+              formik.handleChange(event);
+              formik.setFieldValue("city", "");
+              setCityFromDepartment(event.target.value as string);
+            }}
+          />
+          <SelectField
+            groupClassname={"md:col-span-6"}
+            label={"Ciudad"}
+            options={cities.map((item) => ({ children: item, value: item }))}
+            disabled={dataLoading}
+            id={"city"}
+            name={"city"}
+            formik={formik}
+          />
           <TextField
             groupClassname={"md:col-span-6"}
             labelName={"Dirección"}
@@ -129,6 +182,7 @@ export default function CompanyForm({
           {buttonChildren}
         </Button>
         {error && <ErrorText>{getFirebaseCodeMessage(error)}</ErrorText>}
+        {externalError && <ErrorText>{externalError}</ErrorText>}
       </form>
     </div>
   );

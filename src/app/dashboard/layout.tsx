@@ -6,17 +6,33 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { removeSession } from "@ncl/app/actions/auth-actions";
 import { signOut } from "@ncl/app/lib/firebase/auth";
+import { UserProvider, useUser } from "@ncl/app/context/user-context";
+import { RoleEnum } from "@ncl/app/shared/enums";
+import { UserData } from "@ncl/app/shared/models";
 
 export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  return (
+    <UserProvider>
+      <Layout>{children}</Layout>
+    </UserProvider>
+  );
+}
+
+function Layout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const { user, setUser } = useUser();
   const handleSignOut = async () => {
+    setUser(null);
     await signOut();
     await removeSession();
   };
-
   return (
     <div className="dashboard">
       <aside
@@ -36,7 +52,7 @@ export default function DashboardLayout({
           <ul className="dashboard-nav">
             {SIDEBAR_NAV_MENU.map((item) => (
               <li key={item.route}>
-                <ActiveLink navItem={item} />
+                <ActiveLink navItem={item} user={user} />
               </li>
             ))}
           </ul>
@@ -60,7 +76,13 @@ export default function DashboardLayout({
   );
 }
 
-function ActiveLink({ navItem }: { navItem: SidebarNavMenuProps }) {
+function ActiveLink({
+  navItem,
+  user,
+}: {
+  navItem: SidebarNavMenuProps;
+  user: UserData | null;
+}) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -69,7 +91,8 @@ function ActiveLink({ navItem }: { navItem: SidebarNavMenuProps }) {
     router.push(navItem.route);
   };
 
-  return (
+  return !["Empresas", "Usuarios"].includes(navItem.label) ||
+    user?.role === RoleEnum.admin ? (
     <a
       href={navItem.route}
       onClick={handleClick}
@@ -78,5 +101,5 @@ function ActiveLink({ navItem }: { navItem: SidebarNavMenuProps }) {
       <Icon fontSize={"small"}>{navItem.icon}</Icon>
       <span>{navItem.label}</span>
     </a>
-  );
+  ) : null;
 }

@@ -1,19 +1,15 @@
 import TextField from "@ncl/app/components/shared/text-field";
 import SelectField from "@ncl/app/components/shared/select-field";
-import {
-  FORM_ERROR_MESSAGE,
-  getFirebaseCodeMessage,
-  USER_ROLES,
-} from "@ncl/app/shared";
+import { getFirebaseCodeMessage, USER_ROLES } from "@ncl/app/shared";
 import Button from "@ncl/app/components/shared/button";
 import ErrorText from "@ncl/app/components/shared/error-text";
 import { useEffect, useState } from "react";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import { RoleEnum } from "@ncl/app/shared/enums";
 import { getAllCompanies } from "@ncl/app/lib/firebase/firestore/company";
 import { CompanyData } from "@ncl/app/shared/models/company.data";
 import { UserData } from "@ncl/app/shared/models";
+import { userFormValidator } from "@ncl/app/shared/validators/user-form-validator";
 
 interface UserFormProps {
   userData?: UserData;
@@ -46,32 +42,6 @@ export default function UserForm({
     fetchData();
   }, []);
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-    lastName: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-    phone: Yup.string()
-      .matches(/^\d{10}$/, FORM_ERROR_MESSAGE.PHONE_INVALID)
-      .required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-    email: Yup.string()
-      .email(FORM_ERROR_MESSAGE.EMAIL_INVALID)
-      .required(FORM_ERROR_MESSAGE.EMAIL_REQUIRED),
-    password: userData
-      ? Yup.string().min(8, FORM_ERROR_MESSAGE.PASSWORD_MIN).notRequired()
-      : Yup.string()
-          .min(8, FORM_ERROR_MESSAGE.PASSWORD_MIN)
-          .required(FORM_ERROR_MESSAGE.PASSWORD_REQUIRED),
-    confirmPassword: userData
-      ? Yup.string().oneOf(
-          [Yup.ref("password")],
-          FORM_ERROR_MESSAGE.PASSWORD_DIFFERENT,
-        )
-      : Yup.string()
-          .oneOf([Yup.ref("password")], FORM_ERROR_MESSAGE.PASSWORD_DIFFERENT)
-          .required(FORM_ERROR_MESSAGE.PASSWORD_REQUIRED),
-    companyId: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-    role: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
-  });
-
   const formik = useFormik({
     initialValues: {
       name: userData?.name || "",
@@ -86,7 +56,7 @@ export default function UserForm({
     },
     validateOnChange: true,
     enableReinitialize: true,
-    validationSchema: validationSchema,
+    validationSchema: userFormValidator(userData),
     onSubmit: async (values) => {
       const { confirmPassword, ...valuesToSend } = values;
       handleSubmit({

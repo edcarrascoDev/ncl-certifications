@@ -41,7 +41,7 @@ export default function SelectField<TData>({
     (formik?.touched[name] && (formik?.errors[name] as string)) ||
     props.helperText;
   return (
-    <FormControl className={groupClassname} fullWidth={fullWidth}>
+    <FormControl className={`${groupClassname} !mb-4`} fullWidth={fullWidth}>
       <label className={"block mb-1 text-sm font-medium"} id={`${id}_label`}>
         {label}
       </label>

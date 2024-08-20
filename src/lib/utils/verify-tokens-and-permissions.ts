@@ -26,14 +26,17 @@ export async function verifyTokensAndPermissions(
       return false;
     }
 
-    for (const [claim, expectedValue] of Object.entries(requiredClaims)) {
-      if (user.customClaims[claim] !== expectedValue) {
-        res.status(403).json({
-          code: "auth/unauthorized-user",
-          message: "No Valid Claims",
-        });
-        return false;
-      }
+    if (
+      !Object.entries(requiredClaims).some(
+        ([claim, expectedValue]) =>
+          user.customClaims && user.customClaims[claim] === expectedValue,
+      )
+    ) {
+      res.status(403).json({
+        code: "auth/unauthorized-user",
+        message: "No Valid Claims",
+      });
+      return false;
     }
 
     return true;

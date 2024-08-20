@@ -22,11 +22,13 @@ export default function Home() {
               </h2>
             </div>
 
-            <div className="mt-6">{LoginForm()}</div>
+            <div className="mt-6">
+              <LoginForm />
+            </div>
           </div>
         </div>
       </div>
-      <div className="h-auto hidden lg:block flex-1 h-screen">
+      <div className="hidden lg:block flex-1 h-screen">
         <img
           className="w-full h-full object-cover"
           src="/hero-paper-check.webp"
