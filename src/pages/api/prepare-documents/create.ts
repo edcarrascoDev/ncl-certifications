@@ -22,12 +22,12 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === "POST") {
-    // // Verificar permisos antes de parsear el formulario
-    // const hasPermissions = await verifyTokensAndPermissions(req, res, {
-    //   admin: true,
-    //   preparer: true,
-    // });
-    // if (!hasPermissions) return;
+    // Verificar permisos antes de parsear el formulario
+    const hasPermissions = await verifyTokensAndPermissions(req, res, {
+      admin: true,
+      preparer: true,
+    });
+    if (!hasPermissions) return;
 
     const form = new IncomingForm();
 
