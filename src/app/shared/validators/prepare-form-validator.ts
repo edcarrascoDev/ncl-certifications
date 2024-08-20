@@ -10,6 +10,7 @@ export const prepareFormValidator = Yup.object().shape({
     )
     .required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
   internalNumber: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  companyId: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
   companyName: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
   companyCity: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
   preparerName: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),

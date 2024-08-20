@@ -16,17 +16,10 @@ export const fetchRequest = async <TData>(
     };
 
     if (!(body instanceof FormData)) {
-      console.log("is not Formdata");
       defaultHeaders = {
         ...defaultHeaders,
         "Content-Type": "application/json",
       };
-    }
-
-    if (body instanceof FormData) {
-      console.log("formData");
-    } else {
-      console.log("JSON", JSON.stringify(body));
     }
 
     const response = await fetch(url, {

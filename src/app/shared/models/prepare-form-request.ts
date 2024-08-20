@@ -1,6 +1,7 @@
 export interface PrepareFormRequest {
   licensePlate: string;
   internalNumber: string;
+  companyId: string;
   companyName: string;
   companyCity: string;
   preparerName: string;

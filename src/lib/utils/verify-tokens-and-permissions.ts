@@ -1,24 +1,15 @@
 import { auth } from "firebase-admin";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { verifyToken } from "@ncl/lib/utils/verify-token";
 
 export async function verifyTokensAndPermissions(
   req: NextApiRequest,
   res: NextApiResponse,
   requiredClaims: Record<string, boolean> = {},
 ): Promise<boolean> {
-  const token = req.headers.authorization?.split("Bearer ")[1];
-  if (!token) {
-    res
-      .status(401)
-      .json({ code: "auth/unauthorized-user", message: "No token provided" });
-    return false;
-  }
-
   try {
-    const decodedToken = await auth().verifyIdToken(token);
-
-    const user = await auth().getUser(decodedToken.uid);
-    if (!user.customClaims) {
+    const user = await verifyToken(req, res);
+    if (!user?.customClaims) {
       res.status(403).json({
         code: "auth/unauthorized-user",
         message: "No Claims provided",

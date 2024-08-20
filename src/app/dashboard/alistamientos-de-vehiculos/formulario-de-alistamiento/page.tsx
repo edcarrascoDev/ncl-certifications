@@ -7,108 +7,39 @@ import FileInput from "@ncl/app/components/shared/file-input";
 import Button from "@ncl/app/components/shared/button";
 import { prepareFormValidator } from "@ncl/app/shared/validators";
 import { fetchRequest } from "@ncl/app/shared/utils";
-import { PrepareFormRequest } from "@ncl/app/shared/models";
+import { CompanyData, PrepareFormRequest } from "@ncl/app/shared/models";
+import { prepareFormInitialValues } from "@ncl/app/shared";
+import { useUser } from "@ncl/app/context/user-context";
+import { useEffect, useState } from "react";
 
 export default function Page() {
+  const { user } = useUser();
+  const [company, setCompany] = useState<CompanyData>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  useEffect(() => {
+    if (user) {
+      setIsLoading(true);
+      fetchRequest("/api/companies/get-company-by-id", {
+        userId: user.id,
+        companyId: user.companyId,
+      })
+        .then((response) => {
+          if (response.success) {
+            setCompany(response.result as CompanyData);
+          } else {
+            console.error(response.error);
+          }
+        })
+        .catch((error) => console.error(error))
+        .finally(() => setIsLoading(false));
+    }
+  }, [user]);
+
   const formik = useFormik({
-    initialValues: {
-      licensePlate: "",
-      internalNumber: "",
-      companyName: "",
-      companyCity: "",
-      preparerName: "",
-      preparerID: "",
-      driverName: "",
-      isLicenseTransitValid: "",
-      licenseTransitObs: "",
-      licenseTransitFile: null,
-      isSOATValid: "",
-      SOATObs: "",
-      SOATFile: null,
-      isPrevRevisionValid: "",
-      prevRevisionObs: "",
-      prevRevisionFile: null,
-      isRTMAndECValid: "",
-      RTMAndECObs: "",
-      RTMAndECFile: null,
-      isPolicyRCEAndRCCValid: "",
-      policyRCEAndRCCObs: "",
-      policyRCEAndRCCFile: null,
-      isOperationCardValid: "",
-      operationCardObs: "",
-      operationCardFile: null,
-      isDriverLicenseValid: "",
-      driverLicenseObs: "",
-      driverLicenseFile: null,
-      isEngineLeaksValid: "",
-      engineLeaksObs: "",
-      engineLeaksFile: null,
-      isBeltTensionValid: "",
-      beltTensionObs: "",
-      beltTensionFile: null,
-      isFuelCapsValid: "",
-      fuelCapsObs: "",
-      fuelCapsFile: null,
-      isTransmissionStatusValid: "",
-      transmissionStatusObs: "",
-      transmissionStatusFile: null,
-      isBatteryStatusValid: "",
-      batteryStatusObs: "",
-      batteryStatusFile: null,
-      isFrontTurnSignalsValid: "",
-      frontTurnSignalsObs: "",
-      frontTurnSignalsFile: null,
-      isRearTurnSignalsValid: "",
-      rearTurnSignalsObs: "",
-      rearTurnSignalsFile: null,
-      isHighLightsValid: "",
-      highLightsObs: "",
-      highLightsFile: null,
-      isLowLightsValid: "",
-      lowLightsObs: "",
-      lowLightsFile: null,
-      isStopsValid: "",
-      stopsObs: "",
-      stopsFile: null,
-      isReverseLightValid: "",
-      reverseLightObs: "",
-      reverseLightFile: null,
-      isParkingLightsValid: "",
-      parkingLightsObs: "",
-      parkingLightsFile: null,
-      isDashboardLightsValid: "",
-      dashboardLightsObs: "",
-      dashboardLightsFile: null,
-      isSuspensionStatusValid: "",
-      suspensionStatusObs: "",
-      suspensionStatusFile: null,
-      isWiperStatusValid: "",
-      wiperStatusObs: "",
-      wiperStatusFile: null,
-      isMainBrakesStatusValid: "",
-      mainBrakesStatusObs: "",
-      mainBrakesStatusFile: null,
-      isEmergencyBrakesStatusValid: "",
-      emergencyBrakesStatusObs: "",
-      emergencyBrakesStatusFile: null,
-      isFrontTyresStatusValid: "",
-      frontTyresStatusObs: "",
-      frontTyresStatusFile: null,
-      isRearTyresStatusValid: "",
-      rearTyresStatusObs: "",
-      rearTyresStatusFile: null,
-      isSpareTyreStatusValid: "",
-      spareTyreStatusObs: "",
-      spareTyreStatusFile: null,
-      isSideMirrorsStatusValid: "",
-      sideMirrorsStatusObs: "",
-      sideMirrorsStatusFile: null,
-      isRearviewStatusValid: "",
-      rearviewStatusObs: "",
-      rearviewStatusFile: null,
-    },
+    initialValues: prepareFormInitialValues(user, company),
     validationSchema: prepareFormValidator,
     validateOnChange: true,
+    enableReinitialize: true,
     onSubmit: async (values: PrepareFormRequest, { setSubmitting }) => {
       try {
         const formData = new FormData();
@@ -154,18 +85,21 @@ export default function Page() {
               name={"licensePlate"}
               formik={formik}
               InputProps={{ style: { textTransform: "uppercase" } }}
+              disabled={isLoading}
             />
             <TextField
               groupClassname={"md:col-span-6"}
               labelName={"Número interno"}
               name={"internalNumber"}
               formik={formik}
+              disabled={isLoading}
             />
             <TextField
               groupClassname={"md:col-span-6"}
               labelName={"Empresa"}
               name={"companyName"}
               formik={formik}
+              disabled={isLoading}
               readOnly
             />
             <TextField
@@ -173,6 +107,7 @@ export default function Page() {
               labelName={"Ciudad"}
               name={"companyCity"}
               formik={formik}
+              disabled={isLoading}
               readOnly
             />
             <TextField
@@ -180,6 +115,7 @@ export default function Page() {
               labelName={"Encargado del alistamiento"}
               name={"preparerName"}
               formik={formik}
+              disabled={isLoading}
               readOnly
             />
             <TextField
@@ -187,6 +123,7 @@ export default function Page() {
               labelName={"Nombre del conductor"}
               name={"driverName"}
               formik={formik}
+              disabled={isLoading}
             />
           </div>
         </div>
@@ -783,7 +720,7 @@ export default function Page() {
               </td>
             </tr>
             <tr>
-              <td className={"font-medium"}>Reversa</td>
+              <td className={"font-medium"}>Parqueo</td>
               <td>Estado de luces</td>
               <td>
                 <RadioGroup
@@ -1148,7 +1085,9 @@ export default function Page() {
             </tr>
           </TableForm>
         </div>
-        <Button type={"submit"}>Generar documento</Button>
+        <Button className="mt-4" type={"submit"}>
+          Generar documento
+        </Button>
         {formik.isSubmitting && "Procesando"}
       </form>
     </div>
