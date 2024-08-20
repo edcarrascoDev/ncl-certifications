@@ -7,4 +7,6 @@ export const FORM_ERROR_MESSAGE = {
   PASSWORD_REQUIRED: "Por favor, ingrese su contraseña",
   PASSWORD_MIN: "La contraseña debe tener al menos 8 caracteres",
   PASSWORD_DIFFERENT: "Las contraseñas deben coincidir",
+  PLATE_FORMAT:
+    "El formato de la placa no es válido. Ejemplos válidos: 'JMP234', 'AB1234', 'XYZ12', 'TRE12F'.",
 };

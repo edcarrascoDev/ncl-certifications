@@ -13,6 +13,7 @@ type TextField<TData> = TextFieldProps & {
   formik?: FormikHookResponse<TData>;
   name: keyof TData;
   groupClassname?: string;
+  readOnly?: boolean;
 };
 
 export default function TextField<TData>({
@@ -26,6 +27,7 @@ export default function TextField<TData>({
   type,
   helperText,
   groupClassname,
+  readOnly,
   ...props
 }: TextField<TData>) {
   const [showPassword, setShowPassword] = useState<boolean>();
@@ -52,6 +54,7 @@ export default function TextField<TData>({
         }
         type={type !== "password" ? type : showPassword ? "text" : "password"}
         InputProps={{
+          readOnly,
           endAdornment:
             type === "password" ? (
               <InputAdornment position={"end"}>
@@ -68,8 +71,9 @@ export default function TextField<TData>({
                 </IconButton>
               </InputAdornment>
             ) : (
-              props.inputProps?.endAdornment
+              props.InputProps?.endAdornment
             ),
+          ...props.InputProps,
         }}
         {...props}
       />

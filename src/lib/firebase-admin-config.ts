@@ -9,8 +9,10 @@ const serviceAccount: ServiceAccount = {
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   });
 }
 
 export const auth = admin.auth();
 export const firestore = admin.firestore();
+export const storage = admin.storage();

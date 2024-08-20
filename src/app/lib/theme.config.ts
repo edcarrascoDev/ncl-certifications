@@ -28,6 +28,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          textTransform: "inherit",
+        },
+      },
+    },
     MuiSelect: {
       styleOverrides: {
         select: {

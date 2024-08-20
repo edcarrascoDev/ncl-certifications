@@ -10,16 +10,29 @@ export const fetchRequest = async <TData>(
   try {
     const token = await auth.currentUser?.getIdToken();
 
-    const defaultHeaders = {
-      "Content-Type": "application/json",
+    let defaultHeaders: Record<string, string> = {
       Authorization: `Bearer ${token}`,
       ...headers,
     };
 
+    if (!(body instanceof FormData)) {
+      console.log("is not Formdata");
+      defaultHeaders = {
+        ...defaultHeaders,
+        "Content-Type": "application/json",
+      };
+    }
+
+    if (body instanceof FormData) {
+      console.log("formData");
+    } else {
+      console.log("JSON", JSON.stringify(body));
+    }
+
     const response = await fetch(url, {
       method,
       headers: defaultHeaders,
-      body: JSON.stringify(body),
+      body: body instanceof FormData ? body : JSON.stringify(body),
     });
 
     const result = await response.json();

@@ -1,0 +1,26 @@
+.table-form {
+    @apply w-full text-sm text-left rtl:text-right text-gray-700;
+
+    .table-form-head {
+        @apply text-xs text-gray-900 bg-gray-200 uppercase;
+    }
+
+    td,
+    th {
+        @apply p-3;
+    }
+
+    tbody {
+        tr {
+            @apply bg-gray-50 hover:bg-gray-100 border-b;
+        }
+    }
+
+    .MuiFormControl-root {
+        zoom: .8;
+
+        .MuiFormControlLabel-label {
+            @apply text-nowrap;
+        }
+    }
+}
