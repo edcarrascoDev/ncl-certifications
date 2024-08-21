@@ -70,6 +70,9 @@ export interface PrepareFormRequest {
   isSuspensionStatusValid: string;
   suspensionStatusObs?: string;
   suspensionStatusFile?: File | null;
+  isPowerSteeringStatusValid: string;
+  powerSteeringStatusObs?: string;
+  powerSteeringStatusFile?: File | null;
   isWiperStatusValid: string;
   wiperStatusObs?: string;
   wiperStatusFile?: File | null;
@@ -94,4 +97,88 @@ export interface PrepareFormRequest {
   isRearviewStatusValid: string;
   rearviewStatusObs?: string;
   rearviewStatusFile?: File | null;
+  isEmergencyExitValid: string;
+  emergencyExitObs?: string;
+  emergencyExitFile?: File | null;
+  isHornValid: string;
+  hornObs?: string;
+  hornFile?: File | null;
+  isFluidLevelBrakesValid: string;
+  fluidLevelBrakesObs?: string;
+  fluidLevelBrakesFile?: File | null;
+  isFluidLevelOilValid: string;
+  fluidLevelOilObs?: string;
+  fluidLevelOilFile?: File | null;
+  isFluidLevelRefrigerantValid: string;
+  fluidLevelRefrigerantObs?: string;
+  fluidLevelRefrigerantFile?: File | null;
+  isDryAndWetFiltersValid: string;
+  dryAndWetFiltersObs?: string;
+  dryAndWetFiltersFile?: File | null;
+  isPassiveSafetyValid: string;
+  passiveSafetyObs?: string;
+  passiveSafetyFile?: File | null;
+  // Última fecha de mantenimiento
+  lastOilChangeDate: string;
+  isLastOilChangeValid: string;
+  lastOilChangeObs?: string;
+  lastOilChangeFile?: File | null;
+  lastCleanDate: string;
+  isLastCleanValid: string;
+  lastCleanObs?: string;
+  lastCleanFile?: File | null;
+  lastAlignmentBalanceDate: string;
+  isLastAlignmentBalanceValid: string;
+  lastAlignmentBalanceObs?: string;
+  lastAlignmentBalanceFile?: File | null;
+  lastSyncDate: string;
+  isLastSyncValid: string;
+  lastSyncObs?: string;
+  lastSyncFile?: File | null;
+  lastTyreChangesDate: string;
+  isLastTyreChangesValid: string;
+  lastTyreChangesObs?: string;
+  lastTyreChangesFile?: File | null;
+  // Extintor
+  isExtinguisherValid: string;
+  extinguisherObs?: string;
+  extinguisherFile?: File | null;
+  isExtinguisherSizeValid: string;
+  extinguisherSizeObs?: string;
+  extinguisherSizeFile?: File | null;
+  // Herramientas
+  isPliersValid: string;
+  pliersObs?: string;
+  pliersFile?: File | null;
+  isScrewdriversValid: string;
+  screwdriversObs?: string;
+  screwdriversFile?: File | null;
+  isWrenchValid: string;
+  wrenchObs?: string;
+  wrenchFile?: File | null;
+  isCrossPieceValid: string;
+  crossPieceObs?: string;
+  crossPieceFile?: File | null;
+  isJackValid: string;
+  jackObs?: string;
+  jackFile?: File | null;
+  isTyreShockValid: string;
+  tyreShockObs?: string;
+  tyreShockFile?: File | null;
+  // Señales
+  isWarningSignsValid: string;
+  warningSignsObs?: string;
+  warningSignsFile?: File | null;
+  // Chaleco
+  isSafetyVestsValid: string;
+  safetyVestsObs?: string;
+  safetyVestsFile?: File | null;
+  // Botiquín
+  isFirstAidKitValid: string;
+  firstAidKitObs?: string;
+  firstAidKitFile?: File | null;
+  // Residuos
+  isWasteValid: string;
+  wasteObs?: string;
+  wasteFile?: File | null;
 }

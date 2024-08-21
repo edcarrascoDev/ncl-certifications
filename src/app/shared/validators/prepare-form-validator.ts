@@ -2,13 +2,6 @@ import * as Yup from "yup";
 import { FORM_ERROR_MESSAGE } from "@ncl/app/shared";
 
 export const prepareFormValidator = Yup.object().shape({
-  licensePlate: Yup.string()
-    .transform((value) => value.toUpperCase())
-    .matches(
-      /^([A-Z]{3}\d{3}|[A-Z]{2}\d{4}|[A-Z]{3}\d{2}[A-Z])$/,
-      FORM_ERROR_MESSAGE.PLATE_FORMAT,
-    )
-    .required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
   internalNumber: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
   companyId: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
   companyName: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
@@ -58,6 +51,9 @@ export const prepareFormValidator = Yup.object().shape({
   isSuspensionStatusValid: Yup.string().required(
     FORM_ERROR_MESSAGE.FIELD_REQUIRED,
   ),
+  isPowerSteeringStatusValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
   isWiperStatusValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
   isMainBrakesStatusValid: Yup.string().required(
     FORM_ERROR_MESSAGE.FIELD_REQUIRED,
@@ -80,4 +76,55 @@ export const prepareFormValidator = Yup.object().shape({
   isRearviewStatusValid: Yup.string().required(
     FORM_ERROR_MESSAGE.FIELD_REQUIRED,
   ),
+  isEmergencyExitValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  isHornValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isFluidLevelBrakesValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  isFluidLevelOilValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  isFluidLevelRefrigerantValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  isDryAndWetFiltersValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  isPassiveSafetyValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  lastOilChangeDate: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isLastOilChangeValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  lastCleanDate: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isLastCleanValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  lastAlignmentBalanceDate: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  isLastAlignmentBalanceValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  lastSyncDate: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isLastSyncValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  lastTyreChangesDate: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isLastTyreChangesValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  isExtinguisherValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isExtinguisherSizeValid: Yup.string().required(
+    FORM_ERROR_MESSAGE.FIELD_REQUIRED,
+  ),
+  isPliersValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isScrewdriversValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isWrenchValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isCrossPieceValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isJackValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isTyreShockValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isWarningSignsValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isSafetyVestsValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isFirstAidKitValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
+  isWasteValid: Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),
 });
