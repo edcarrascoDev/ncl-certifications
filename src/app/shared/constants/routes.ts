@@ -9,5 +9,4 @@ export const ROUTES = {
   EDIT_COMPANY: "/dashboard/empresas/editar",
   CARS_PREPARE: "/dashboard/alistamiento-de-vehiculos",
   NEW_CAR_PREPARE: "/dashboard/alistamiento-de-vehiculos/nuevo",
-  EDIT_CAR_PREPARE: "/dashboard/alistamiento-de-vehiculos/editar",
 };

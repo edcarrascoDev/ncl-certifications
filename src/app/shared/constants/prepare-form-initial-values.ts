@@ -13,6 +13,7 @@ export const prepareFormInitialValues = (
   companyId: user?.companyId || "",
   companyName: company?.name || "",
   companyCity: company?.city || "",
+  companyDepartment: company?.department || "",
   preparerName: user ? `${user?.name} ${user?.lastName}` : "",
   preparerID: user?.id || "",
   driverName: "",

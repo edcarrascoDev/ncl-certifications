@@ -1,5 +1,5 @@
 export interface StandardDocumentData {
-  id: string;
+  id?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

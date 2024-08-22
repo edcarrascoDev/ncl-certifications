@@ -23,12 +23,11 @@ export async function verifyToken(
         code: "auth/unauthorized-user",
         message: "No Claims provided",
       });
-      return null;
     }
 
     return user;
   } catch (error) {
-    console.error("Error verifying token or checking claims:", error);
+    console.error("Error verifying token", error);
     res.status(500).json({
       code: "auth/server-error",
       message: "Internal Server Error",

@@ -1,21 +1,23 @@
 "use client";
 import TextField from "@ncl/app/components/shared/text-field";
 import { useFormik } from "formik";
-import TableForm from "@ncl/app/dashboard/alistamientos-de-vehiculos/formulario-de-alistamiento/steps/table-form";
+import TableForm from "@ncl/app/dashboard/alistamiento-de-vehiculos/nuevo/steps/table-form";
 import RadioGroup from "@ncl/app/components/shared/radio-group";
 import FileInput from "@ncl/app/components/shared/file-input";
 import Button from "@ncl/app/components/shared/button";
 import { prepareFormValidator } from "@ncl/app/shared/validators";
-import { fetchRequest } from "@ncl/app/shared/utils";
+import { fetchRequest, filterEmptyValues } from "@ncl/app/shared/utils";
 import { CompanyData, PrepareFormRequest } from "@ncl/app/shared/models";
-import { prepareFormInitialValues } from "@ncl/app/shared";
+import { prepareFormInitialValues, ROUTES } from "@ncl/app/shared";
 import { useUser } from "@ncl/app/context/user-context";
 import { useEffect, useState } from "react";
 import BackdropLoading from "@ncl/app/components/shared/backdrop-loading";
 import ErrorText from "@ncl/app/components/shared/error-text";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const { user } = useUser();
+  const router = useRouter();
   const [company, setCompany] = useState<CompanyData>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
@@ -46,10 +48,11 @@ export default function Page() {
     enableReinitialize: true,
     onSubmit: async (values: PrepareFormRequest, { setSubmitting }) => {
       try {
+        const filteredData = filterEmptyValues(values);
         const formData = new FormData();
 
-        Object.keys(values).forEach((key) => {
-          const value = values[key as keyof PrepareFormRequest];
+        Object.keys(filteredData).forEach((key) => {
+          const value = filteredData[key as keyof PrepareFormRequest];
           if (value instanceof File) {
             formData.append(key, value, value.name);
           } else {
@@ -64,7 +67,7 @@ export default function Page() {
 
         console.log(response);
         if (response.success) {
-          console.log("success");
+          router.push(`${ROUTES.CARS_PREPARE}/${response.result}`);
         } else {
           console.error(response.error);
         }

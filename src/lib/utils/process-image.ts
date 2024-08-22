@@ -21,7 +21,7 @@ export const processImage = async (
 
   const optimizedBuffer = await sharp(fileBuffer)
     .resize(800)
-    .jpeg({ quality: 80 })
+    .jpeg({ quality: 70 })
     .toBuffer();
 
   await fileUpload.save(optimizedBuffer, {

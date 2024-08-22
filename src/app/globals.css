@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import "./styles/config.css";
 @import "./styles/layouts/dashboard.css";
+@import "./styles/layouts/document.css";
 @import "./styles/layouts/form.css";
 @import "./styles/layouts/table-form.css";
 @import "./styles/components/button.css";
