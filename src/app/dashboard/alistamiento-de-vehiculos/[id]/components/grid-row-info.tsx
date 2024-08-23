@@ -14,7 +14,7 @@ interface RowInfo {
 }
 export default function GridRowInfo(data: RowInfo) {
   return (
-    <div className="bg-gray-50 rounded border mb-2">
+    <div className="bg-gray-50 rounded border mb-2 break-inside-avoid-page">
       <div className="document-grid bg-gray-100">
         <div className="col-span-3 document-head-item">
           Elementos de inspección

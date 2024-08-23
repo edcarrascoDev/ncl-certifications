@@ -1,18 +1,13 @@
 import { Icon, Snackbar } from "@mui/material";
-interface Props {
-  open: boolean;
-  message: React.ReactNode;
-  messageType?: "success" | "error";
-  autoHideDuration?: number;
-  onClose?: () => void;
-}
+import { SnackbarResponseType } from "@ncl/app/shared/types";
+
 export default function SnackbarResponse({
   open,
   message,
   onClose,
   autoHideDuration = 6000,
   messageType = "success",
-}: Props) {
+}: SnackbarResponseType) {
   const icon = messageType === "success" ? "check_circle" : "error";
   return (
     <Snackbar

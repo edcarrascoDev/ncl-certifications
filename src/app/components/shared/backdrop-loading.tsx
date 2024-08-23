@@ -5,7 +5,7 @@ interface Props {
 }
 export default function BackdropLoading({ open }: Props) {
   return (
-    <Backdrop open={open}>
+    <Backdrop open={open} sx={{ zIndex: 999 }}>
       <CircularProgress />
     </Backdrop>
   );

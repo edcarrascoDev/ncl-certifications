@@ -4,6 +4,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@mui/material";
 import theme from "@ncl/app/lib/theme.config";
+import { UiProvider } from "@ncl/app/context/ui-context";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -41,7 +42,9 @@ export default function RootLayout({
       </head>
       <body className={montserrat.className}>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <UiProvider>{children}</UiProvider>
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

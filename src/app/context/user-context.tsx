@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "@ncl/app/lib/firebase/firebase.config";
 import { getUserById } from "@ncl/app/lib/firebase/firestore/user";
+import { useUi } from "@ncl/app/context/ui-context";
 
 interface UserContextType {
   user: UserData | null;
@@ -15,12 +16,15 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { setLoading } = useUi();
   const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setLoading(true);
       if (currentUser) {
         const response = await getUserById(currentUser.uid);
+        setLoading(false);
         if (response.success) {
           setUser(response.result as UserData);
         } else {

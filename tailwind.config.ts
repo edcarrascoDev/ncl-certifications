@@ -31,6 +31,9 @@ const config: Config = {
       fontFamily: {
         sans: ['"Montserrat"', ...defaultTheme.fontFamily.sans],
       },
+      screens: {
+        print: { raw: "print" },
+      },
     },
   },
   plugins: [],

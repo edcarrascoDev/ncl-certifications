@@ -37,7 +37,7 @@ function Layout({
     <div className="dashboard">
       <aside
         id="default-sidebar"
-        className="print:hidden fixed top-0 left-0 z-40 w-72 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        className="print:hidden fixed top-0 left-0 z-10 w-72 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar"
       >
         <div className="h-full flex flex-col px-3 py-4 overflow-y-auto bg-primary">

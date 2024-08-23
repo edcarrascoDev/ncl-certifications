@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
+  defaultFile?: File | null;
   id: string;
   label?: string;
   accept?: string;
   onChange: (event: File | null) => void;
 }
 export default function FileInput({
+  defaultFile,
   label,
   onChange,
   id,
   accept = "image/*",
 }: Props) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  useEffect(() => {
+    if (defaultFile) {
+      setSelectedFile(defaultFile);
+    }
+  }, [defaultFile]);
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-row items-center">

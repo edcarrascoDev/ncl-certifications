@@ -1,4 +1,5 @@
 import { PrepareDocument } from "@ncl/app/shared/models";
+import moment from "moment";
 
 export default function MainInfo({ document }: { document: PrepareDocument }) {
   return (
@@ -19,7 +20,10 @@ export default function MainInfo({ document }: { document: PrepareDocument }) {
         Empresa: <span>{document.companyName}</span>
       </div>
       <div className="col-span-4 document-item">
-        Fecha: <span>{document.createdAt?.toString() || "No disponible"}</span>
+        Fecha:{" "}
+        <span>
+          {moment(document.createdAt).format("DD/MM/YYYY") || "No disponible"}
+        </span>
       </div>
       <div className="col-span-6 document-item">
         Nombre de quien realiza el alistamiento:{" "}

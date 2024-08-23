@@ -1,6 +1,9 @@
 .document {
     @media print {
         zoom: 0.8;
+        -webkit-print-color-adjust: exact; /* Chrome, Safari */
+        color-adjust: exact; /* Firefox */
+        print-color-adjust: exact;
     }
     .document-grid {
         @apply grid grid-cols-12 gap-1 mb-2;

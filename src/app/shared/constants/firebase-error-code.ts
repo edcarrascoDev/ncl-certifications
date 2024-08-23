@@ -132,4 +132,6 @@ export const FIREBASE_ERROR_CODE: Record<string, string> = {
     "El correo electrónico proporcionado ya esta registrado.",
   "auth/unauthorized-user":
     "Este usuario no está autorizado para realizar esta acción.",
+  "firestore/document-not-found":
+    "No se encontró referencia alguna del documento que está solicitando, por favor revise los datos e intente nuevamente.",
 };
