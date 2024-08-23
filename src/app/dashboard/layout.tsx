@@ -30,9 +30,8 @@ function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const handleSignOut = async () => {
-    setUser(null);
     await signOut();
     await removeSession();
   };

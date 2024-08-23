@@ -42,16 +42,16 @@ export default async function handler(
       .where("licensePlate", "==", licensePlate)
       .get();
 
-    console.log("size", docs.size);
-
     const filteredDocs = docs.docs
       .map((doc) => doc.data() as PrepareDocument)
-      .filter(
-        (item) =>
+      .filter((item) => {
+        console.log(item.preparerID, user.uid);
+        return (
           user.customClaims?.admin ||
           (user.customClaims?.director && item.companyId === companyId) ||
-          item.preparerID === user.uid,
-      );
+          (user.customClaims?.preparer && item.preparerID === user.uid)
+        );
+      });
 
     return res.status(200).json(filteredDocs);
   } catch (error) {

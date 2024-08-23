@@ -27,6 +27,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      console.log({ currentUser });
       setLoading(true);
       if (currentUser) {
         const response = await getUserById(currentUser.uid);
@@ -37,6 +38,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           console.error(response.error);
         }
       } else {
+        setLoading(false);
         setUser(null);
       }
     });

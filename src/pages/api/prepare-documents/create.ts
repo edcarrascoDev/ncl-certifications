@@ -73,6 +73,7 @@ export default async function handler(
       ).filter((result): result is ImageUploadResult => result !== null);
 
       const docData: Partial<PrepareDocument> = {
+        preparerID,
         ...convertedFields,
         createdAt: new Date(),
         ...Object.fromEntries(imageUrls.map(({ key, value }) => [key, value])),

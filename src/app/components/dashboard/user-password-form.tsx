@@ -7,6 +7,8 @@ import { fetchRequest, getFirebaseCodeMessage } from "@ncl/app/shared";
 import { useState } from "react";
 import ErrorText from "@ncl/app/components/shared/error-text";
 import SuccessText from "@ncl/app/components/shared/success-text";
+import { signOut } from "@ncl/app/lib/firebase/auth";
+import { removeSession } from "@ncl/app/actions/auth-actions";
 
 export default function UserPassword({ user }: { user: UserData }) {
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +31,10 @@ export default function UserPassword({ user }: { user: UserData }) {
 
       if (response.success) {
         setIsSuccess(true);
+        setTimeout(async () => {
+          await signOut();
+          await removeSession();
+        }, 6000);
       } else {
         setIsSuccess(false);
         setError(response.error);
@@ -59,7 +65,10 @@ export default function UserPassword({ user }: { user: UserData }) {
       </form>
       {error && <ErrorText>{getFirebaseCodeMessage(error)}</ErrorText>}
       {isSuccess && (
-        <SuccessText>La contraseña se actualizó correctamente</SuccessText>
+        <SuccessText>
+          La contraseña se actualizó correctamente, pro favor ingrese nuevamente
+          con su nueva contraseña
+        </SuccessText>
       )}
     </div>
   );

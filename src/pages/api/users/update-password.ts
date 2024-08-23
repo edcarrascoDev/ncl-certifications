@@ -7,9 +7,8 @@ export default async function handler(
 ) {
   console.log("start");
   if (req.method === "POST") {
-    console.log(req);
     const token = req.headers.authorization?.split("Bearer ")[1];
-    console.log(token);
+
     if (!token) {
       res
         .status(401)
@@ -19,7 +18,6 @@ export default async function handler(
     try {
       const decodedToken = await auth.verifyIdToken(token);
       const uid = decodedToken.uid;
-      console.log(uid);
       if (!uid) {
         res.status(401).json({
           code: "auth/unauthorized-user",

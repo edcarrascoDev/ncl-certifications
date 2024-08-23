@@ -5,21 +5,25 @@
         color-adjust: exact; /* Firefox */
         print-color-adjust: exact;
     }
-    .document-grid {
-        @apply grid grid-cols-12 gap-1 mb-2;
-    }
-    .document-item {
-        @apply bg-gray-50 rounded border p-2 text-xs text-gray-700 content-center;
-        span {
-            @apply text-sm text-gray-900 font-semibold block;
-        }
-    }
 
-    .document-head-item {
-        @apply bg-gray-100 px-2 py-1 font-semibold text-sm;
-    }
+}
 
-    .document-col-item {
-        @apply px-2 py-3 text-xs;
-    }
+.document-grid {
+    @apply grid grid-cols-12 gap-1 mb-2;
+}
+
+.document-item {
+    @apply bg-gray-50 rounded border p-2 text-xs text-gray-700 font-normal content-center;
+}
+
+.document-item span {
+    @apply text-sm text-gray-900 font-semibold block;
+}
+
+.document-head-item {
+    @apply bg-gray-100 px-2 py-1 font-semibold text-sm;
+}
+
+.document-col-item {
+    @apply px-2 py-3 text-xs;
 }

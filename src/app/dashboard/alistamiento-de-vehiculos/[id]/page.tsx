@@ -22,6 +22,7 @@ export default function Page({ params }: { params: { id: string } }) {
     if (document && document.id === params.id) {
       return;
     }
+    console.log(user);
     if (user) {
       setLoading(true);
       setDocument(null);
