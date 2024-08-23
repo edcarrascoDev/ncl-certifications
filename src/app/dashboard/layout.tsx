@@ -9,6 +9,7 @@ import { signOut } from "@ncl/app/lib/firebase/auth";
 import { UserProvider, useUser } from "@ncl/app/context/user-context";
 import { RoleEnum } from "@ncl/app/shared/enums";
 import { UserData } from "@ncl/app/shared/models";
+import { CompanyProvider } from "@ncl/app/context/company-context";
 
 export default function DashboardLayout({
   children,
@@ -17,7 +18,9 @@ export default function DashboardLayout({
 }>) {
   return (
     <UserProvider>
-      <Layout>{children}</Layout>
+      <CompanyProvider>
+        <Layout>{children}</Layout>
+      </CompanyProvider>
     </UserProvider>
   );
 }

@@ -5,7 +5,11 @@ import {
   filterEmptyValues,
   getFirebaseCodeMessage,
 } from "@ncl/app/shared/utils";
-import { CompanyData, PrepareFormRequest } from "@ncl/app/shared/models";
+import {
+  CompanyData,
+  PrepareDocument,
+  PrepareFormRequest,
+} from "@ncl/app/shared/models";
 import { PREPARE_FORM_STEPS, ROUTES } from "@ncl/app/shared";
 import { useUser } from "@ncl/app/context/user-context";
 import { useEffect, useState } from "react";
@@ -14,10 +18,12 @@ import MainInfoForm from "@ncl/app/dashboard/alistamiento-de-vehiculos/nuevo/ste
 import { LinearProgress } from "@mui/material";
 import TableFormStep from "@ncl/app/dashboard/alistamiento-de-vehiculos/nuevo/steps/table-form-step";
 import { useUi } from "@ncl/app/context/ui-context";
+import { usePrepareDocument } from "@ncl/app/context/prepare-document-context";
 
 export default function Page() {
   const { user } = useUser();
   const { setLoading, setSnackbarData } = useUi();
+  const { setDocument } = usePrepareDocument();
   const router = useRouter();
   const [company, setCompany] = useState<CompanyData>();
   const [onNextStep, setOnNextStep] = useState<boolean>(false);
@@ -84,14 +90,17 @@ export default function Page() {
         }
       });
 
-      const response = await fetchRequest<PrepareFormRequest>(
+      const response = await fetchRequest<PrepareDocument>(
         "/api/prepare-documents/create",
         formData,
       );
 
       setLoading(false);
-      if (response.success) {
-        router.push(`${ROUTES.CARS_PREPARE}/${response.result}`);
+      if (response.success && response.result) {
+        setDocument(response.result as PrepareDocument);
+        router.push(
+          `${ROUTES.CARS_PREPARE}/${(response.result as PrepareDocument).id}`,
+        );
         setSnackbarData({
           open: true,
           message: "El documento se ha generado satisfactoriamente",

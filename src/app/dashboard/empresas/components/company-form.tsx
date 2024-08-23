@@ -73,8 +73,8 @@ export default function CompanyForm({
       email: companyData?.email || "",
       phone: companyData?.phone || "",
       address: companyData?.address || "",
-      city: companyData?.city || "",
-      department: companyData?.department || "",
+      city: "",
+      department: "",
       address2: companyData?.address2 || "",
       id: companyData?.id || "",
     },
@@ -83,6 +83,18 @@ export default function CompanyForm({
     validationSchema: companyFormValidator,
     onSubmit: handleSubmit,
   });
+
+  useEffect(() => {
+    if (departments.length > 0 && companyData) {
+      formik.setFieldValue("department", companyData.department);
+    }
+  }, [departments, companyData]);
+
+  useEffect(() => {
+    if (cities.length > 0 && companyData) {
+      formik.setFieldValue("city", companyData.city);
+    }
+  }, [cities, companyData]);
 
   useEffect(() => {
     setIsFormDirty(

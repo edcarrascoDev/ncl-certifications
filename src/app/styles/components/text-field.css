@@ -1,0 +1,7 @@
+.text-field {
+    &.text-fiel--input-white {
+        .MuiInputBase-root {
+            @apply bg-white;
+        }
+    }
+}

@@ -7,6 +7,9 @@ import {
   collection,
   getDocs,
   getDoc,
+  query,
+  orderBy,
+  OrderByDirection,
 } from "@firebase/firestore";
 import { db } from "@ncl/app/lib/firebase/firebase.config";
 import { DocumentData } from "firebase/firestore";
@@ -70,9 +73,14 @@ export async function get<TData>(path: string, id: string) {
 
 export async function getAll<TData>(
   path: string,
+  orderByPath = "createdAt",
+  direction: OrderByDirection = "desc",
 ): Promise<RequestResponse<TData>> {
   try {
-    const querySnapshot = await getDocs(collection(db, path));
+    const collectionRef = collection(db, path);
+    const querySnapshot = await getDocs(
+      query(collectionRef, orderBy(orderByPath, direction)),
+    );
 
     const dataList: TData[] = querySnapshot.docs.map(
       (doc) =>

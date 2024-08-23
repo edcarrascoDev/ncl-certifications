@@ -19,7 +19,7 @@ export async function createUser(
 export async function updateUser(
   data: UserData,
 ): Promise<RequestResponse<UserData>> {
-  return await update<UserData>(data.id, data, PATH);
+  return await update<UserData>(data.id as string, data, PATH);
 }
 
 export async function removeUser(id: string): Promise<RequestResponse<string>> {

@@ -26,13 +26,13 @@ export default function TextField<TData>({
   name,
   type,
   helperText,
-  groupClassname,
+  groupClassname = "",
   readOnly,
   ...props
 }: TextField<TData>) {
   const [showPassword, setShowPassword] = useState<boolean>();
   return (
-    <div className={`${groupClassname} mb-4`}>
+    <div className={`${groupClassname} text-field mb-4`}>
       {labelName && (
         <label className="block mb-1 text-sm font-medium" htmlFor={id}>
           {labelName}

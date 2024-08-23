@@ -9,6 +9,10 @@ import { useUi } from "@ncl/app/context/ui-context";
 interface UserContextType {
   user: UserData | null;
   setUser: React.Dispatch<React.SetStateAction<UserData | null>>;
+  users: UserData[];
+  setUsers: React.Dispatch<React.SetStateAction<UserData[]>>;
+  currentUser: UserData | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<UserData | null>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -18,6 +22,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { setLoading } = useUi();
   const [user, setUser] = useState<UserData | null>(null);
+  const [users, setUsers] = useState<UserData[]>([]);
+  const [currentUser, setCurrentUser] = useState<UserData | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -39,7 +45,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, users, setUsers, currentUser, setCurrentUser }}
+    >
       {children}
     </UserContext.Provider>
   );

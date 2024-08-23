@@ -10,10 +10,11 @@ import { fetchRequest, USER_ROLES } from "@ncl/app/shared";
 import { Icon } from "@mui/material";
 import ConfirmationDialog from "@ncl/app/components/shared/confirmation-dialog";
 import TableHeader from "@ncl/app/components/shared/table-header";
+import { useUser } from "@ncl/app/context/user-context";
 
 export default function Users() {
   const router = useRouter();
-  const [users, setUsers] = useState<UserData[]>([]);
+  const { users, setUsers, setCurrentUser } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
@@ -25,7 +26,9 @@ export default function Users() {
         setUsers(response.result as UserData[]);
       }
     };
-    fetchUsers();
+    if (users.length === 0) {
+      fetchUsers();
+    }
   }, []);
 
   const handleRemove = async (value: boolean) => {
@@ -70,15 +73,18 @@ export default function Users() {
     },
     {
       field: "edit",
-      headerName: "Editar/Eliminar",
+      headerName: "",
       valueGetter: (item) => (
         <div className={"flex gap-2"}>
           <Button
-            onClick={() => router.push(`${ROUTES.USERS}/${item.id}`)}
+            onClick={() => {
+              setCurrentUser(item);
+              router.push(`${ROUTES.USERS}/${item.id}`);
+            }}
             size={"small"}
             disabled={isLoading}
           >
-            <Icon sx={{ fontSize: 16 }}>edit</Icon>
+            <Icon sx={{ fontSize: 14 }}>edit</Icon>
           </Button>
           <Button
             onClick={() => {
@@ -89,7 +95,7 @@ export default function Users() {
             size={"small"}
             disabled={isLoading}
           >
-            <Icon sx={{ fontSize: 16 }}>delete</Icon>
+            <Icon sx={{ fontSize: 14 }}>delete</Icon>
           </Button>
         </div>
       ),

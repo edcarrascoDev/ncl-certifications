@@ -12,11 +12,13 @@ import {
 } from "@ncl/app/lib/firebase/firestore/company";
 import ConfirmationDialog from "@ncl/app/components/shared/confirmation-dialog";
 import TableHeader from "@ncl/app/components/shared/table-header";
+import { useCompany } from "@ncl/app/context/company-context";
+import { useUi } from "@ncl/app/context/ui-context";
 
 export default function Companies() {
   const router = useRouter();
-  const [companies, setCompanies] = useState<CompanyData[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { loading, setLoading } = useUi();
+  const { companies, setCompanies, setCurrentCompany } = useCompany();
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<CompanyData | null>(
     null,
@@ -29,16 +31,18 @@ export default function Companies() {
         setCompanies(response.result as CompanyData[]);
       }
     };
-    fetchCompanies();
+    if (companies.length === 0) {
+      fetchCompanies();
+    }
   }, []);
 
   const handleRemove = async (value: boolean) => {
     setOpenConfirmation(false);
-    if (value && selectedCompany) {
-      setIsLoading(true);
+    if (value && selectedCompany?.id) {
+      setLoading(true);
       const response = await removeCompany(selectedCompany.id);
       setSelectedCompany(null);
-      setIsLoading(false);
+      setLoading(false);
       if (response.success) {
         setCompanies(
           companies.filter((item) => item.id !== selectedCompany.id),
@@ -58,13 +62,16 @@ export default function Companies() {
     { field: "email", headerName: "Correo Electrónico" },
     {
       field: "edit",
-      headerName: "Editar/Eliminar",
+      headerName: "",
       valueGetter: (item) => (
         <div className={"flex gap-2"}>
           <Button
-            onClick={() => router.push(`${ROUTES.COMPANIES}/${item.id}`)}
+            onClick={() => {
+              setCurrentCompany(item);
+              router.push(`${ROUTES.COMPANIES}/${item.id}`);
+            }}
             size={"small"}
-            disabled={isLoading}
+            disabled={loading}
           >
             <Icon sx={{ fontSize: 16 }}>edit</Icon>
           </Button>
@@ -75,7 +82,7 @@ export default function Companies() {
             }}
             color={"error"}
             size={"small"}
-            disabled={isLoading}
+            disabled={loading}
           >
             <Icon sx={{ fontSize: 16 }}>delete</Icon>
           </Button>

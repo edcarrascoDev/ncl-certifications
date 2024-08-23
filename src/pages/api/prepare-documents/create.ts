@@ -80,11 +80,9 @@ export default async function handler(
 
       const docRef = firestore.collection("prepare-documents").doc();
 
-      await docRef.set(docData);
+      await docRef.set({ ...docData, id: docRef.id });
 
-      res.status(201).json(docRef.id);
-      await firestore.collection("prepare-documents").doc().set(docData);
-      res.status(201).json(docData);
+      res.status(201).json({ ...docData, id: docRef.id });
     } catch (error) {
       if (
         (error instanceof Error && "errorInfo" in error) ||

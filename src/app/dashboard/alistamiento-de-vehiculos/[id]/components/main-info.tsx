@@ -13,7 +13,7 @@ export default function MainInfo({ document }: { document: PrepareDocument }) {
       <div className="col-span-4 document-item">
         Ciudad:{" "}
         <span>
-          {document.companyCity} {document.companyDepartment}
+          {document.companyCity}, {document.companyDepartment}
         </span>
       </div>
       <div className="col-span-8 document-item">
