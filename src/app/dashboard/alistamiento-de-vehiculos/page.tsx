@@ -83,7 +83,7 @@ export default function Page() {
   return (
     <div className="mt-4">
       {(user?.role === RoleEnum.admin || user?.role === RoleEnum.preparer) && (
-        <div className="bg-picton-blue-50 p-4 mb-4 md:mb-8 rounded border border-picton-blue-100 flex justify-between gap-2">
+        <div className="bg-picton-blue-50 p-4 mb-4 md:mb-8 rounded border border-picton-blue-100 flex flex-wrap justify-between gap-2">
           <h2 className="text-lg font-semibold text-primary">
             Genera aquí un nuevo documento.
           </h2>
