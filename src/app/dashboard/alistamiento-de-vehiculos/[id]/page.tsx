@@ -22,7 +22,7 @@ export default function Page({ params }: { params: { id: string } }) {
     if (document && document.id === params.id) {
       return;
     }
-    console.log(user);
+
     if (user) {
       setLoading(true);
       setDocument(null);
@@ -84,13 +84,13 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="col-start-1 col-span-3 row-start-1 text-xs content-center document-item">
               <ul className="[&>li]:my-1">
                 <li>
-                  <b>Version:</b> 1.0
+                  <b>Version:</b> 002
                 </li>
                 <li>
-                  <b>Fecha:</b> 20 de Agosto del 2022
+                  <b>Fecha:</b> 20/08/2024
                 </li>
                 <li>
-                  <b>Código:</b> xxxx
+                  <b>Código:</b> FO.07.00.07
                 </li>
               </ul>
             </div>

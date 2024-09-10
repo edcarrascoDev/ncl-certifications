@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import Compressor from "compressorjs";
+import { ChangeEvent, useEffect, useState } from "react";
 
 interface Props {
   defaultFile?: File | null;
@@ -21,6 +22,26 @@ export default function FileInput({
     }
   }, [defaultFile]);
 
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const imageFile =
+      event.target && event.target.files ? event.target.files[0] : null;
+
+    if (!imageFile) return;
+
+    new Compressor(imageFile, {
+      quality: 0.6,
+      maxWidth: 800,
+      success: (compressedResult) => {
+        console.log({ compressedResult });
+        setSelectedFile(compressedResult as File);
+        onChange(compressedResult as File);
+      },
+      error: (error) => {
+        console.error("Error al comprimir la imagen:", error);
+      },
+    });
+  };
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-row items-center">
@@ -28,12 +49,7 @@ export default function FileInput({
           type="file"
           id={id}
           accept={accept}
-          onChange={(e) => {
-            setSelectedFile(
-              e.target && e.target.files ? e.target.files[0] : null,
-            );
-            onChange(e.target && e.target.files ? e.target.files[0] : null);
-          }}
+          onChange={handleImageChange}
           hidden
         />
         <label

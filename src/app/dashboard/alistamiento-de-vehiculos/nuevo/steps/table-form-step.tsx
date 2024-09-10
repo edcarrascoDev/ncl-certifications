@@ -49,7 +49,7 @@ export default function TableFormStep({
 
   const filteredValidationSchema = Object.fromEntries(
     Array.from(keysToKeep)
-      .filter((key) => key && (key.startsWith("is") || key.endsWith("Date")))
+      .filter((key) => key && key.startsWith("is"))
       .map((key) => [
         key,
         Yup.string().required(FORM_ERROR_MESSAGE.FIELD_REQUIRED),

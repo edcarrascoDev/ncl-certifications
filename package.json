@@ -20,6 +20,7 @@
     "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.6",
     "@mui/material-nextjs": "^5.16.6",
+    "compressorjs": "^1.2.1",
     "firebase": "^10.12.5",
     "firebase-admin": "^12.3.1",
     "firebase-functions": "^5.0.1",

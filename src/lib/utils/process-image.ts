@@ -1,6 +1,5 @@
 import fs from "fs";
 import { storage } from "@ncl/lib/firebase-admin-config";
-import sharp from "sharp";
 import formidable from "formidable";
 import { ImageData } from "@ncl/app/shared/types";
 
@@ -19,12 +18,7 @@ export const processImage = async (
 
   const fileBuffer = fs.readFileSync(file.filepath);
 
-  const optimizedBuffer = await sharp(fileBuffer)
-    .resize(800)
-    .jpeg({ quality: 70 })
-    .toBuffer();
-
-  await fileUpload.save(optimizedBuffer, {
+  await fileUpload.save(fileBuffer, {
     metadata: {
       contentType: "image/jpeg",
     },

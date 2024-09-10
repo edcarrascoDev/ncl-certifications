@@ -83,8 +83,8 @@ export default function Page() {
 
       Object.keys(filteredData).forEach((key) => {
         const value = filteredData[key as keyof PrepareFormRequest];
-        if (value instanceof File) {
-          formData.append(key, value, value.name);
+        if (key.endsWith("File")) {
+          formData.append(key, value as File, (value as File).name);
         } else {
           formData.append(key, String(value));
         }
