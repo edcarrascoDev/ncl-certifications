@@ -43,7 +43,7 @@ export default function LoginForm() {
       onSubmit={(e) => {
         console.log("formulario enviado");
         e.preventDefault();
-        formik.handleSubmit;
+        formik.handleSubmit(e);
       }}
     >
       <div>
@@ -63,6 +63,7 @@ export default function LoginForm() {
         />
       </div>
       <div>
+        <span onClick={() => formik.handleSubmit()}>Otra forma</span>
         <Button type="submit" disabled={formik.isSubmitting} fullwidth>
           Iniciar sesión
         </Button>
