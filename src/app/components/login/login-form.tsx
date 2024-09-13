@@ -38,7 +38,7 @@ export default function LoginForm() {
   });
 
   return (
-    <form className="space-y-6" onSubmit={formik.handleSubmit}>
+    <div className="space-y-6">
       <div>
         <TextField
           labelName={"Correo electrónico"}
@@ -56,11 +56,16 @@ export default function LoginForm() {
         />
       </div>
       <div>
-        <Button type="submit" disabled={formik.isSubmitting} fullwidth>
+        <Button
+          type="button"
+          onClick={formik.handleSubmit}
+          disabled={formik.isSubmitting}
+          fullwidth
+        >
           Iniciar sesión
         </Button>
       </div>
       {error && <ErrorText>{getFirebaseCodeMessage(error)}</ErrorText>}
-    </form>
+    </div>
   );
 }
