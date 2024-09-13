@@ -38,14 +38,7 @@ export default function LoginForm() {
   });
 
   return (
-    <form
-      className="space-y-6"
-      onSubmit={(e) => {
-        console.log("formulario enviado");
-        e.preventDefault();
-        formik.handleSubmit(e);
-      }}
-    >
+    <form className="space-y-6" onSubmit={formik.handleSubmit}>
       <div>
         <TextField
           labelName={"Correo electrónico"}
@@ -63,7 +56,6 @@ export default function LoginForm() {
         />
       </div>
       <div>
-        <span onClick={() => formik.handleSubmit()}>Otra forma</span>
         <Button type="submit" disabled={formik.isSubmitting} fullwidth>
           Iniciar sesión
         </Button>
