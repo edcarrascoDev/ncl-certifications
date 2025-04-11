@@ -1,4 +1,4 @@
-import { Timestamp } from "@ncl/app/shared/types";
+import { Timestamp } from "firebase/firestore";
 
 export interface StandardDocumentData {
   id?: string;

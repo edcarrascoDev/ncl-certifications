@@ -12,7 +12,7 @@ import {
   OrderByDirection,
 } from "@firebase/firestore";
 import { db } from "@ncl/app/lib/firebase/firebase.config";
-import { DocumentData } from "firebase/firestore";
+import { DocumentData, Timestamp } from "firebase/firestore";
 import { RequestResponse } from "@ncl/app/shared/types";
 
 export async function create<TData extends WithFieldValue<DocumentData>>(
@@ -22,7 +22,11 @@ export async function create<TData extends WithFieldValue<DocumentData>>(
 ): Promise<RequestResponse<TData>> {
   try {
     const docRef = id ? doc(db, path, id) : doc(collection(db, path));
-    await setDoc(docRef, { ...data, id: docRef.id, createdAt: new Date() });
+    await setDoc(docRef, {
+      ...data,
+      id: docRef.id,
+      createdAt: Timestamp.fromDate(new Date()),
+    });
     return { success: true, result: docRef.id };
   } catch (error) {
     return { success: false, error: (error as Error).message };

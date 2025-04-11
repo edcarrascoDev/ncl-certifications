@@ -22,7 +22,9 @@ export default function MainInfo({ document }: { document: PrepareDocument }) {
       <div className="col-span-4 document-item">
         Fecha:{" "}
         <span>
-          {moment(document.createdAt).format("DD/MM/YYYY") || "No disponible"}
+          {document.createdAt
+            ? moment(document.createdAt.toDate()).format("DD/MM/YYYY")
+            : "No disponible"}
         </span>
       </div>
       <div className="col-span-6 document-item">

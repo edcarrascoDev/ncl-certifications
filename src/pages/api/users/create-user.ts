@@ -3,6 +3,7 @@ import { RoleEnum } from "@ncl/app/shared/enums";
 import { UserData } from "@ncl/app/shared/models";
 import { verifyTokensAndPermissions } from "@ncl/lib/utils/verify-tokens-and-permissions";
 import { auth, firestore } from "@ncl/lib/firebase-admin-config";
+import { Timestamp } from "firebase/firestore";
 
 export default async function handler(
   req: NextApiRequest,
@@ -49,7 +50,7 @@ export default async function handler(
         role,
         companyName,
         companyId,
-        createdAt: new Date(),
+        createdAt: Timestamp.fromDate(new Date()),
       };
 
       await firestore.collection("users").doc(userRecord.uid).set(userData);
