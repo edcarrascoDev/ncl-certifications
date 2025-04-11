@@ -1,5 +1,6 @@
 import { PrepareDocument } from "@ncl/app/shared/models";
 import moment from "moment";
+import { getFormattedDate } from "@ncl/app/shared";
 
 export default function MainInfo({ document }: { document: PrepareDocument }) {
   return (
@@ -23,7 +24,7 @@ export default function MainInfo({ document }: { document: PrepareDocument }) {
         Fecha:{" "}
         <span>
           {document.createdAt
-            ? moment(document.createdAt.toDate()).format("DD/MM/YYYY")
+            ? getFormattedDate(document?.createdAt)
             : "No disponible"}
         </span>
       </div>
