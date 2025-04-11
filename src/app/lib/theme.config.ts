@@ -32,6 +32,7 @@ const theme = createTheme({
       styleOverrides: {
         input: {
           textTransform: "inherit",
+          padding: "8.5px 14px !important",
         },
       },
     },

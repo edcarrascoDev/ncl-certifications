@@ -9,11 +9,18 @@ import { CompanyData } from "@ncl/app/shared/models/company.data";
 import { useRouter } from "next/navigation";
 import { useCompany } from "@ncl/app/context/company-context";
 import { useUi } from "@ncl/app/context/ui-context";
-import { getFirebaseCodeMessage } from "@ncl/app/shared";
+import { getFirebaseCodeMessage, ROUTES } from "@ncl/app/shared";
 import Button from "@ncl/app/components/shared/button";
+import { useUser } from "@ncl/app/context/user-context";
 
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const { user, isAdmin } = useUser();
+
+  if (user && !isAdmin) {
+    router.push(ROUTES.DASHBOARD);
+  }
+
   const { loading, setLoading, setSnackbarData } = useUi();
   const { currentCompany, setCurrentCompany, setCompanies } = useCompany();
   const [error, setError] = useState<string | null>("");
@@ -31,10 +38,10 @@ export default function Page({ params }: { params: { id: string } }) {
         });
       }
     };
-    if (!currentCompany || currentCompany.id !== params.id) {
+    if (isAdmin && (!currentCompany || currentCompany.id !== params.id)) {
       fetchCompany();
     }
-  }, []);
+  }, [isAdmin]);
 
   const handleSubmit = async (data: CompanyData) => {
     setLoading(true);
@@ -58,22 +65,24 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   };
   return (
-    <>
-      <Button
-        onClick={() => router.back()}
-        color="light"
-        startIcon="arrow_back"
-        className="my-4"
-      >
-        Volver
-      </Button>
-      <CompanyForm
-        companyData={currentCompany as CompanyData}
-        buttonChildren={"Actualizar empresa"}
-        error={error}
-        handleSubmit={handleSubmit}
-        dataLoading={loading}
-      />
-    </>
+    isAdmin && (
+      <>
+        <Button
+          onClick={() => router.back()}
+          color="light"
+          startIcon="arrow_back"
+          className="my-4"
+        >
+          Volver
+        </Button>
+        <CompanyForm
+          companyData={currentCompany as CompanyData}
+          buttonChildren={"Actualizar empresa"}
+          error={error}
+          handleSubmit={handleSubmit}
+          dataLoading={loading}
+        />
+      </>
+    )
   );
 }

@@ -1,4 +1,5 @@
 import { RoleEnum } from "@ncl/app/shared/enums";
+import { ROUTES } from "./routes";
 
 export interface SidebarNavMenuProps {
   label: string;
@@ -7,12 +8,17 @@ export interface SidebarNavMenuProps {
   roleToDisplay?: RoleEnum;
 }
 export const SIDEBAR_NAV_MENU: SidebarNavMenuProps[] = [
-  { label: "Dashboard", route: "/dashboard", icon: "dashboard" },
+  { label: "Dashboard", route: ROUTES.DASHBOARD, icon: "dashboard" },
   {
     label: "Alistamiento de vehículos",
-    route: "/dashboard/alistamiento-de-vehiculos",
+    route: ROUTES.CARS_PREPARE,
     icon: "today",
   },
-  { label: "Empresas", route: "/dashboard/empresas", icon: "apartment" },
-  { label: "Usuarios", route: "/dashboard/usuarios", icon: "group" },
+  {
+    label: "Alistamientos",
+    route: ROUTES.COMPANIES_REPORT,
+    icon: "apartment",
+  },
+  { label: "Empresas", route: ROUTES.COMPANIES, icon: "apartment" },
+  { label: "Usuarios", route: ROUTES.USERS, icon: "group" },
 ];

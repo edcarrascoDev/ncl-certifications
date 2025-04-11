@@ -63,11 +63,8 @@ function Layout({
             priority
           />
           <ul className="dashboard-nav">
-            {SIDEBAR_NAV_MENU.map((item) => (
-              <li
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                key={item.route}
-              >
+            {SIDEBAR_NAV_MENU.map((item, index) => (
+              <li onClick={() => setIsSidebarOpen(!isSidebarOpen)} key={index}>
                 <ActiveLink navItem={item} user={user} />
               </li>
             ))}
@@ -118,16 +115,32 @@ function ActiveLink({
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    route: string,
+  ) => {
     e.preventDefault();
-    router.push(navItem.route);
+    router.push(route);
   };
 
-  return !["Empresas", "Usuarios"].includes(navItem.label) ||
-    user?.role === RoleEnum.admin ? (
+  if (navItem.label === "Alistamientos" && user?.role === RoleEnum.director) {
+    return (
+      <a
+        href={`${navItem.route}/${user?.companyId}`}
+        onClick={(e) => handleClick(e, `${navItem.route}/${user?.companyId}`)}
+        className={`dashboard-menu-item ${pathname === navItem.route && "dashboard-menu-item--active"}`}
+      >
+        <Icon fontSize={"small"}>{navItem.icon}</Icon>
+        <span>{navItem.label}</span>
+      </a>
+    );
+  }
+  return navItem.label !== "Alistamientos" &&
+    (!["Empresas", "Usuarios"].includes(navItem.label) ||
+      user?.role === RoleEnum.admin) ? (
     <a
       href={navItem.route}
-      onClick={handleClick}
+      onClick={(e) => handleClick(e, navItem.route)}
       className={`dashboard-menu-item ${pathname === navItem.route && "dashboard-menu-item--active"}`}
     >
       <Icon fontSize={"small"}>{navItem.icon}</Icon>

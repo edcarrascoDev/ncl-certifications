@@ -5,17 +5,15 @@ import { fetchRequest, getFirebaseCodeMessage, ROUTES } from "@ncl/app/shared";
 import { PrepareDocument } from "@ncl/app/shared/models";
 import { useUser } from "@ncl/app/context/user-context";
 import { useUi } from "@ncl/app/context/ui-context";
-import Table, { TableColumn } from "@ncl/app/components/shared/table";
 import Button from "@ncl/app/components/shared/button";
 import { useRouter } from "next/navigation";
-import moment from "moment";
 import { usePrepareDocument } from "@ncl/app/context/prepare-document-context";
-import ErrorText from "@ncl/app/components/shared/error-text";
 import { RoleEnum } from "@ncl/app/shared/enums";
+import PrepareDocumentsList from "@ncl/app/components/dashboard/prepare-documents/prepare-documents-list";
 
 export default function Page() {
   const { user } = useUser();
-  const { documents, setDocuments, setDocument } = usePrepareDocument();
+  const { documents, setDocuments } = usePrepareDocument();
   const router = useRouter();
   const { setLoading, setSnackbarData } = useUi();
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,42 +42,6 @@ export default function Page() {
     }
   };
 
-  const handleClick = (item: PrepareDocument) => {
-    setDocument(item);
-    router.push(`${ROUTES.CARS_PREPARE}/${item.id}`);
-  };
-
-  const columns: TableColumn<PrepareDocument>[] = [
-    {
-      field: "fullName",
-      headerName: "Realizador",
-      valueGetter: (item) => item.preparerName,
-    },
-    {
-      field: "licensePlate",
-      headerName: "Placa",
-    },
-    {
-      field: "internalNumber",
-      headerName: "Número de licencia",
-    },
-    {
-      field: "date",
-      headerName: "Fecha de creación",
-      valueGetter: (item) => moment(item.createdAt).format("DD/MM/YYYY"),
-    },
-    {
-      field: "watch",
-      headerName: "documento",
-      valueGetter: (item) => (
-        <div className={"flex gap-2"}>
-          <Button onClick={() => handleClick(item)} size={"small"}>
-            Ver documento
-          </Button>
-        </div>
-      ),
-    },
-  ];
   return (
     <div className="mt-4">
       {(user?.role === RoleEnum.admin || user?.role === RoleEnum.preparer) && (
@@ -112,15 +74,7 @@ export default function Page() {
         </div>
       </div>
 
-      {documents &&
-        (documents.length > 0 ? (
-          <Table columns={columns} rows={documents} />
-        ) : (
-          <ErrorText>
-            No se encontró Ningún document con la placa digitada, o no tiene
-            permisos a este.
-          </ErrorText>
-        ))}
+      <PrepareDocumentsList documents={documents} route={ROUTES.CARS_PREPARE} />
     </div>
   );
 }

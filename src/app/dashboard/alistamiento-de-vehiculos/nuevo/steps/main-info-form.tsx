@@ -15,7 +15,6 @@ export default function MainInfoForm({
   handleSubmit: (data?: Partial<PrepareFormRequest>) => void;
   isSubmitting: boolean;
 }) {
-  console.log(partialData);
   const formik = useFormik<Partial<PrepareFormRequest>>({
     initialValues: {
       licensePlate: partialData?.licensePlate || "",

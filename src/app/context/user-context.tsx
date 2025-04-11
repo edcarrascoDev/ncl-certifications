@@ -5,12 +5,15 @@ import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "@ncl/app/lib/firebase/firebase.config";
 import { getUserById } from "@ncl/app/lib/firebase/firestore/user";
 import { useUi } from "@ncl/app/context/ui-context";
+import { RoleEnum } from "@ncl/app/shared/enums";
 
 interface UserContextType {
   user: UserData | null;
   setUser: React.Dispatch<React.SetStateAction<UserData | null>>;
   users: UserData[];
   setUsers: React.Dispatch<React.SetStateAction<UserData[]>>;
+  isAdmin: boolean;
+  setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
   currentUser: UserData | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<UserData | null>>;
 }
@@ -24,22 +27,24 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<UserData | null>(null);
   const [users, setUsers] = useState<UserData[]>([]);
   const [currentUser, setCurrentUser] = useState<UserData | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log({ currentUser });
       setLoading(true);
       if (currentUser) {
         const response = await getUserById(currentUser.uid);
         setLoading(false);
         if (response.success) {
           setUser(response.result as UserData);
+          setIsAdmin((response.result as UserData).role === RoleEnum.admin);
         } else {
           console.error(response.error);
         }
       } else {
         setLoading(false);
         setUser(null);
+        setIsAdmin(false);
       }
     });
 
@@ -48,7 +53,16 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, users, setUsers, currentUser, setCurrentUser }}
+      value={{
+        user,
+        setUser,
+        users,
+        setUsers,
+        currentUser,
+        setCurrentUser,
+        isAdmin,
+        setIsAdmin,
+      }}
     >
       {children}
     </UserContext.Provider>

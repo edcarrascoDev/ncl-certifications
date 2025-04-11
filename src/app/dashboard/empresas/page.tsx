@@ -14,9 +14,16 @@ import ConfirmationDialog from "@ncl/app/components/shared/confirmation-dialog";
 import TableHeader from "@ncl/app/components/shared/table-header";
 import { useCompany } from "@ncl/app/context/company-context";
 import { useUi } from "@ncl/app/context/ui-context";
+import { useUser } from "@ncl/app/context/user-context";
 
 export default function Companies() {
   const router = useRouter();
+  const { user, isAdmin } = useUser();
+
+  if (user && !isAdmin) {
+    router.push(ROUTES.DASHBOARD);
+  }
+
   const { loading, setLoading } = useUi();
   const { companies, setCompanies, setCurrentCompany } = useCompany();
   const [openConfirmation, setOpenConfirmation] = useState(false);
@@ -31,10 +38,10 @@ export default function Companies() {
         setCompanies(response.result as CompanyData[]);
       }
     };
-    if (companies.length === 0) {
+    if (companies.length === 0 && isAdmin) {
       fetchCompanies();
     }
-  }, []);
+  }, [isAdmin]);
 
   const handleRemove = async (value: boolean) => {
     setOpenConfirmation(false);
@@ -68,6 +75,17 @@ export default function Companies() {
           <Button
             onClick={() => {
               setCurrentCompany(item);
+              router.push(`${ROUTES.COMPANIES_REPORT}/${item.id}`);
+            }}
+            size={"small"}
+            color={"secondary"}
+            disabled={loading}
+          >
+            <Icon sx={{ fontSize: 16 }}>list_alt</Icon>
+          </Button>
+          <Button
+            onClick={() => {
+              setCurrentCompany(item);
               router.push(`${ROUTES.COMPANIES}/${item.id}`);
             }}
             size={"small"}
@@ -91,22 +109,24 @@ export default function Companies() {
     },
   ];
   return (
-    <>
-      <TableHeader
-        title={"Lista de empresas"}
-        actionChildren={
-          <Button onClick={() => router.push(ROUTES.NEW_COMPANY)}>
-            Agregar empresa
-          </Button>
-        }
-      />
-      <Table columns={columns} rows={companies} />
-      <ConfirmationDialog
-        open={openConfirmation}
-        title={`¿Está seguro de eliminar la empresa ${selectedCompany?.name} ?`}
-        message={"Una vez realizada esta acción no podrá revertirla"}
-        handleClose={(value) => handleRemove(value)}
-      />
-    </>
+    isAdmin && (
+      <>
+        <TableHeader
+          title={"Lista de empresas"}
+          actionChildren={
+            <Button onClick={() => router.push(ROUTES.NEW_COMPANY)}>
+              Agregar empresa
+            </Button>
+          }
+        />
+        <Table columns={columns} rows={companies} />
+        <ConfirmationDialog
+          open={openConfirmation}
+          title={`¿Está seguro de eliminar la empresa ${selectedCompany?.name} ?`}
+          message={"Una vez realizada esta acción no podrá revertirla"}
+          handleClose={(value) => handleRemove(value)}
+        />
+      </>
+    )
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import UserForm from "@ncl/app/dashboard/usuarios/components/user-form";
-import { fetchRequest, getFirebaseCodeMessage } from "@ncl/app/shared";
+import { fetchRequest, getFirebaseCodeMessage, ROUTES } from "@ncl/app/shared";
 import { UserData } from "@ncl/app/shared/models";
 import { getUserById } from "@ncl/app/lib/firebase/firestore/user";
 import { useUser } from "@ncl/app/context/user-context";
@@ -11,7 +11,12 @@ import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { uid: string } }) {
   const router = useRouter();
-  const { currentUser, setCurrentUser, setUsers } = useUser();
+  const { currentUser, setCurrentUser, setUsers, user, isAdmin } = useUser();
+
+  if (user && !isAdmin) {
+    router.push(ROUTES.DASHBOARD);
+  }
+
   const { loading, setLoading, setSnackbarData } = useUi();
   const [error, setError] = useState<string | null>("");
 
@@ -31,10 +36,10 @@ export default function Page({ params }: { params: { uid: string } }) {
         });
       }
     };
-    if (!currentUser || currentUser.id !== params.uid) {
+    if (isAdmin && (!currentUser || currentUser.id !== params.uid)) {
       fetchUser();
     }
-  }, []);
+  }, [isAdmin]);
 
   const handleSubmit = async (data: UserData) => {
     setError(null);
@@ -78,22 +83,24 @@ export default function Page({ params }: { params: { uid: string } }) {
     }
   };
   return (
-    <>
-      <Button
-        onClick={() => router.back()}
-        color="light"
-        startIcon="arrow_back"
-        className="my-4"
-      >
-        Volver
-      </Button>
-      <UserForm
-        userData={currentUser as UserData}
-        dataLoading={loading}
-        buttonChildren={"Actualizar usuario"}
-        handleSubmit={handleSubmit}
-        error={error}
-      />
-    </>
+    isAdmin && (
+      <>
+        <Button
+          onClick={() => router.back()}
+          color="light"
+          startIcon="arrow_back"
+          className="my-4"
+        >
+          Volver
+        </Button>
+        <UserForm
+          userData={currentUser as UserData}
+          dataLoading={loading}
+          buttonChildren={"Actualizar usuario"}
+          handleSubmit={handleSubmit}
+          error={error}
+        />
+      </>
+    )
   );
 }

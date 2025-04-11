@@ -1,5 +1,6 @@
 import { ImageData } from "@ncl/app/shared/types";
 import { StandardDocumentData } from "@ncl/app/shared/models/standard-document.data";
+import { Moment } from "moment";
 
 export interface PrepareDocument
   extends StandardDocumentData,
@@ -278,4 +279,10 @@ export interface PrepareWaste {
   isWasteValid: string;
   wasteObs?: string;
   wasteImage?: ImageData;
+}
+
+export interface PrepareDocumentsRequestParams {
+  plate?: string;
+  start?: Moment | null;
+  end?: Moment | null;
 }

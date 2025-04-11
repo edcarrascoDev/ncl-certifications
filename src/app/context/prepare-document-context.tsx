@@ -1,12 +1,19 @@
 "use client";
-import { PrepareDocument } from "@ncl/app/shared/models";
+import {
+  PrepareDocument,
+  PrepareDocumentsRequestParams,
+} from "@ncl/app/shared/models";
 import React, { createContext, useContext, useState } from "react";
 
 interface PrepareDocumentContextType {
   document: PrepareDocument | null;
   documents: PrepareDocument[] | null;
+  requestParams: PrepareDocumentsRequestParams;
   setDocument: React.Dispatch<React.SetStateAction<PrepareDocument | null>>;
   setDocuments: React.Dispatch<React.SetStateAction<PrepareDocument[] | null>>;
+  setRequestParams: React.Dispatch<
+    React.SetStateAction<PrepareDocumentsRequestParams>
+  >;
 }
 
 const PrepareDocumentContext = createContext<
@@ -18,10 +25,23 @@ export const PrepareDocumentProvider: React.FC<{
 }> = ({ children }) => {
   const [document, setDocument] = useState<PrepareDocument | null>(null);
   const [documents, setDocuments] = useState<PrepareDocument[] | null>(null);
+  const [requestParams, setRequestParams] =
+    useState<PrepareDocumentsRequestParams>({
+      start: null,
+      end: null,
+      plate: "",
+    });
 
   return (
     <PrepareDocumentContext.Provider
-      value={{ documents, setDocuments, document, setDocument }}
+      value={{
+        documents,
+        setDocuments,
+        document,
+        setDocument,
+        requestParams,
+        setRequestParams,
+      }}
     >
       {children}
     </PrepareDocumentContext.Provider>

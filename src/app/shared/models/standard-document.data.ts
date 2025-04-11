@@ -1,5 +1,7 @@
+import { Timestamp } from "@ncl/app/shared/types";
+
 export interface StandardDocumentData {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }

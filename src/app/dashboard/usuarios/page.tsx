@@ -14,7 +14,11 @@ import { useUser } from "@ncl/app/context/user-context";
 
 export default function Users() {
   const router = useRouter();
-  const { users, setUsers, setCurrentUser } = useUser();
+  const { user, users, setUsers, setCurrentUser, isAdmin } = useUser();
+  if (user && !isAdmin) {
+    router.push(ROUTES.DASHBOARD);
+  }
+
   const [isLoading, setIsLoading] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
@@ -26,10 +30,10 @@ export default function Users() {
         setUsers(response.result as UserData[]);
       }
     };
-    if (users.length === 0) {
+    if (users.length === 0 && isAdmin) {
       fetchUsers();
     }
-  }, []);
+  }, [isAdmin]);
 
   const handleRemove = async (value: boolean) => {
     setOpenConfirmation(false);
@@ -102,22 +106,24 @@ export default function Users() {
     },
   ];
   return (
-    <>
-      <TableHeader
-        title={"Lista de usuarios"}
-        actionChildren={
-          <Button onClick={() => router.push(ROUTES.NEW_USER)}>
-            Agregar usuario
-          </Button>
-        }
-      />
-      <Table columns={columns} rows={users} />
-      <ConfirmationDialog
-        open={openConfirmation}
-        title={`¿Está seguro de eliminar a ${selectedUser?.name} ${selectedUser?.lastName}?`}
-        message={"Una vez realizada esta acción no podrá revertirla"}
-        handleClose={(value) => handleRemove(value)}
-      />
-    </>
+    isAdmin && (
+      <>
+        <TableHeader
+          title={"Lista de usuarios"}
+          actionChildren={
+            <Button onClick={() => router.push(ROUTES.NEW_USER)}>
+              Agregar usuario
+            </Button>
+          }
+        />
+        <Table columns={columns} rows={users} />
+        <ConfirmationDialog
+          open={openConfirmation}
+          title={`¿Está seguro de eliminar a ${selectedUser?.name} ${selectedUser?.lastName}?`}
+          message={"Una vez realizada esta acción no podrá revertirla"}
+          handleClose={(value) => handleRemove(value)}
+        />
+      </>
+    )
   );
 }
