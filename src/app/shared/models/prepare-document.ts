@@ -286,3 +286,47 @@ export interface PrepareDocumentsRequestParams {
   start?: Moment | null;
   end?: Moment | null;
 }
+
+export interface PrepareDocumentCSVRequest {
+  items: PrepareDocumentCSVItem[];
+  startDate: Moment | null;
+  endDate: Moment | null;
+}
+
+export type PrepareDocumentCSVItem = Pick<
+  PrepareDocument,
+  | "preparerName"
+  | "licensePlate"
+  | "internalNumber"
+  | "companyName"
+  | "companyCity"
+  | "companyDepartment"
+  | "driverName"
+> & {
+  createdAtString: string;
+};
+
+export const prepareDocumentHeaderMap: Record<
+  keyof PrepareDocumentCSVItem,
+  string
+> = {
+  licensePlate: "Placa",
+  internalNumber: "Número de licencia",
+  companyName: "Empresa",
+  companyCity: "Ciudad",
+  companyDepartment: "Departamento",
+  preparerName: "Realizador",
+  driverName: "Nombre del Conductor",
+  createdAtString: "Fecha de creación",
+};
+
+export const validPrepareDocumentsCSVKeys: (keyof PrepareDocumentCSVItem)[] = [
+  "licensePlate",
+  "internalNumber",
+  "companyName",
+  "companyCity",
+  "companyDepartment",
+  "preparerName",
+  "driverName",
+  "createdAtString",
+];
