@@ -28,11 +28,11 @@ export default function PrepareDocumentsList({
     },
     {
       field: "licensePlate",
-      headerName: "Placa",
+      headerName: "Placa del vehículo",
     },
     {
       field: "internalNumber",
-      headerName: "Número de licencia",
+      headerName: "Número interno",
     },
     {
       field: "date",

@@ -310,8 +310,8 @@ export const prepareDocumentHeaderMap: Record<
   keyof PrepareDocumentCSVItem,
   string
 > = {
-  licensePlate: "Placa",
-  internalNumber: "Número de licencia",
+  licensePlate: "Placa del vehículo",
+  internalNumber: "Número interno",
   companyName: "Empresa",
   companyCity: "Ciudad",
   companyDepartment: "Departamento",
