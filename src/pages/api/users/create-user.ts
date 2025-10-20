@@ -50,13 +50,13 @@ export default async function handler(
         role,
         companyName,
         companyId,
-        createdAt: Timestamp.fromDate(new Date()),
       };
 
       await firestore.collection("users").doc(userRecord.uid).set(userData);
 
       res.status(201).json({ userId: userRecord.uid });
     } catch (error) {
+      console.log(error);
       if (
         (error instanceof Error && "errorInfo" in error) ||
         (error as any).code
