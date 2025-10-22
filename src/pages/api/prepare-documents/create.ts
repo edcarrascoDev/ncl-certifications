@@ -8,6 +8,7 @@ import { ImageData } from "@ncl/app/shared/types";
 import { sendErrorResponse } from "@ncl/lib/utils/send-error-response";
 import { PrepareDocument } from "@ncl/app/shared/models";
 import { Timestamp } from "firebase/firestore";
+import admin from "firebase-admin";
 
 export const config = {
   api: {
@@ -76,7 +77,7 @@ export default async function handler(
       const docData: Partial<PrepareDocument> = {
         preparerID,
         ...convertedFields,
-        createdAt: Timestamp.fromDate(new Date()),
+        createdAt: admin.firestore.Timestamp.now(),
         ...Object.fromEntries(imageUrls.map(({ key, value }) => [key, value])),
       };
 
