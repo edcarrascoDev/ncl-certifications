@@ -9,24 +9,27 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const userRecord = await verifyToken(req, res);
-      if (userRecord && userRecord.uid === req.body.userId) {
-        const doc = await firestore
-          .collection("companies")
-          .doc(req.body.companyId)
-          .get();
+      if (!userRecord) return;
 
-        if (doc.exists) {
-          res.status(201).json({ ...doc.data() });
-        } else {
-          res.status(404).json({
-            code: "firestore/document-not-found",
-            message: "Document Not Found",
-          });
-        }
+      if (userRecord.uid !== req.body.userId) {
+        res.status(403).json({
+          code: "auth/forbidden",
+          message: "User ID does not match the requested resource",
+        });
+        return;
+      }
+
+      const doc = await firestore
+        .collection("companies")
+        .doc(req.body.companyId)
+        .get();
+
+      if (doc.exists) {
+        res.status(200).json({ ...doc.data() });
       } else {
-        res.status(401).json({
-          code: "auth/unauthorized-user",
-          message: "No token provided",
+        res.status(404).json({
+          code: "firestore/document-not-found",
+          message: "Document Not Found",
         });
       }
     } catch (error) {
